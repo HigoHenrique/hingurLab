@@ -1,0 +1,38 @@
+[
+  {
+    "id": "PROTEIN_POWDERS",
+    "name": "Suplementos Proteicos",
+    "file": "suplementos.json",
+    "icon": "🥤"
+  },
+  {
+    "id": "MEATS",
+    "name": "Carnes, Aves & Ovos",
+    "file": "carnes-ovos.json",
+    "icon": "🍗"
+  },
+  {
+    "id": "DAIRY",
+    "name": "Laticínios & Iogurtes",
+    "file": "laticinios.json",
+    "icon": "🥛"
+  },
+  {
+    "id": "SNACKS",
+    "name": "Barrinhas & Snacks",
+    "file": "snacks.json",
+    "icon": "🍫"
+  },
+  {
+    "id": "PLANT_BASED",
+    "name": "Fontes Vegetais & Grãos",
+    "file": "vegetais.json",
+    "icon": "🌱"
+  },
+  {
+    "id": "COMMON_TRAPS",
+    "name": "Pegadinhas (\"Falsos Saudáveis\")",
+    "file": "pegadinhas.json",
+    "icon": "⚠️"
+  }
+]

@@ -3,7 +3,7 @@
  */
 
 import { calculateNutritionalMetrics, NUTRI_TIERS } from './calculator.js';
-import { FOOD_PRESETS, PRESET_CATEGORIES } from './presets.js';
+import { FOOD_PRESETS, PRESET_CATEGORIES, loadPresets } from './presets.js';
 import { StorageManager } from './storage.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -897,4 +897,13 @@ document.addEventListener('DOMContentLoaded', () => {
     renderPresetsFilter();
     updateCartBadge();
     resetResultsView();
+
+    // Carregamento dinâmico e modular dos JSONs de presets
+    loadPresets().then(() => {
+        renderQuickPresets();
+        renderPresetsFilter();
+        if (document.getElementById('tab-presets')?.classList.contains('active')) {
+            renderPresetsGrid();
+        }
+    });
 });

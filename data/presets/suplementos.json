@@ -1,0 +1,28 @@
+[
+  {
+    "id": "whey-concentrado",
+    "name": "Whey Protein 80% Concentrado",
+    "category": "Suplementos Proteicos",
+    "portion": 30,
+    "calories": 120,
+    "protein": 24,
+    "carbs": 2.5,
+    "fat": 1.5,
+    "totalWeight": 900,
+    "price": 99.90,
+    "notes": "Padrão-ouro em custo-benefício e concentração proteica."
+  },
+  {
+    "id": "whey-isolado",
+    "name": "Whey Protein Isolado (90%)",
+    "category": "Suplementos Proteicos",
+    "portion": 30,
+    "calories": 110,
+    "protein": 27,
+    "carbs": 0.5,
+    "fat": 0.2,
+    "totalWeight": 900,
+    "price": 159.90,
+    "notes": "Praticamente zero carboidrato e gordura."
+  }
+]

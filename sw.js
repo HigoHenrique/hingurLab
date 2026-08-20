@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nutriprotein-v1';
+const CACHE_NAME = 'nutriprotein-v2';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -8,7 +8,14 @@ const ASSETS_TO_CACHE = [
   './js/calculator.js',
   './js/presets.js',
   './js/storage.js',
-  './js/app.js'
+  './js/app.js',
+  './data/categories.json',
+  './data/presets/suplementos.json',
+  './data/presets/carnes-ovos.json',
+  './data/presets/laticinios.json',
+  './data/presets/snacks.json',
+  './data/presets/vegetais.json',
+  './data/presets/pegadinhas.json'
 ];
 
 self.addEventListener('install', event => {

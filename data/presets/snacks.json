@@ -1,0 +1,15 @@
+[
+  {
+    "id": "barra-proteica-boa",
+    "name": "Barra de Proteína Genuína (20g Prot)",
+    "category": "Barrinhas & Snacks",
+    "portion": 60,
+    "calories": 210,
+    "protein": 20,
+    "carbs": 16,
+    "fat": 7.5,
+    "totalWeight": 60,
+    "price": 13.90,
+    "notes": "Boa proporção para um lanche doce prático com 20g de proteína."
+  }
+]

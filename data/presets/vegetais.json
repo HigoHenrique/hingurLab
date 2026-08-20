@@ -1,0 +1,15 @@
+[
+  {
+    "id": "tofu-firme",
+    "name": "Tofu Firme",
+    "category": "Fontes Vegetais & Grãos",
+    "portion": 100,
+    "calories": 85,
+    "protein": 9.5,
+    "carbs": 2.0,
+    "fat": 4.5,
+    "totalWeight": 500,
+    "price": 14.00,
+    "notes": "Excelente opção vegetal completa em aminoácidos essenciais."
+  }
+]

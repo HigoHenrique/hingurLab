@@ -1,0 +1,41 @@
+[
+  {
+    "id": "barra-cereal-comum",
+    "name": "Barra de Cereal Comum (\"Com Proteína\")",
+    "category": "Pegadinhas (\"Falsos Saudáveis\")",
+    "portion": 25,
+    "calories": 105,
+    "protein": 2.2,
+    "carbs": 17,
+    "fat": 3.2,
+    "totalWeight": 25,
+    "price": 3.20,
+    "notes": "Pegadinha! Apenas ~8% das calorias vêm de proteína; o restante é açúcar e gordura."
+  },
+  {
+    "id": "pasta-amendoim",
+    "name": "Pasta de Amendoim Integral",
+    "category": "Pegadinhas (\"Falsos Saudáveis\")",
+    "portion": 30,
+    "calories": 180,
+    "protein": 8.0,
+    "carbs": 6.0,
+    "fat": 14.0,
+    "totalWeight": 500,
+    "price": 18.90,
+    "notes": "Excelente alimento calórico e fonte de gorduras boas, mas NÃO é fonte primária de proteína (% prot = 17%)."
+  },
+  {
+    "id": "biscoito-fit-proteico",
+    "name": "Biscoito Recheado \"Fit/Proteico\"",
+    "category": "Pegadinhas (\"Falsos Saudáveis\")",
+    "portion": 40,
+    "calories": 195,
+    "protein": 4.5,
+    "carbs": 24,
+    "fat": 9.0,
+    "totalWeight": 80,
+    "price": 8.50,
+    "notes": "Cuidado! A alegação na frente da embalagem esconde alta quantidade de gorduras e açúcares."
+  }
+]

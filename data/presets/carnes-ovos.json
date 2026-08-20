@@ -1,0 +1,67 @@
+[
+  {
+    "id": "peito-frango-grelhado",
+    "name": "Peito de Frango Grelhado",
+    "category": "Carnes, Aves & Ovos",
+    "portion": 100,
+    "calories": 165,
+    "protein": 31,
+    "carbs": 0,
+    "fat": 3.6,
+    "totalWeight": 1000,
+    "price": 22.90,
+    "notes": "A proteína sólida mais limpa e econômica do mercado."
+  },
+  {
+    "id": "patinho-moido",
+    "name": "Carne Bovina (Patinho Moído)",
+    "category": "Carnes, Aves & Ovos",
+    "portion": 100,
+    "calories": 185,
+    "protein": 29,
+    "carbs": 0,
+    "fat": 7.0,
+    "totalWeight": 1000,
+    "price": 39.90,
+    "notes": "Corte magro bovino com alta densidade de ferro e proteína."
+  },
+  {
+    "id": "ovo-inteiro",
+    "name": "Ovo de Galinha Inteiro (2 un)",
+    "category": "Carnes, Aves & Ovos",
+    "portion": 100,
+    "calories": 143,
+    "protein": 13,
+    "carbs": 1.0,
+    "fat": 9.5,
+    "totalWeight": 600,
+    "price": 13.50,
+    "notes": "Excelente biodisponibilidade, porém vem com a gordura natural da gema."
+  },
+  {
+    "id": "clara-de-ovo",
+    "name": "Clara de Ovo Pasteurizada",
+    "category": "Carnes, Aves & Ovos",
+    "portion": 100,
+    "calories": 52,
+    "protein": 11,
+    "carbs": 0.7,
+    "fat": 0.2,
+    "totalWeight": 1000,
+    "price": 18.00,
+    "notes": "Quase 90% das calorias são proteína pura."
+  },
+  {
+    "id": "atum-solido-agua",
+    "name": "Atum Sólido em Água",
+    "category": "Carnes, Aves & Ovos",
+    "portion": 60,
+    "calories": 65,
+    "protein": 14,
+    "carbs": 0,
+    "fat": 0.8,
+    "totalWeight": 170,
+    "price": 9.90,
+    "notes": "Prático e muito magro quando conservado em água."
+  }
+]
