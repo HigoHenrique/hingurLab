@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Quick Presets Bar
     const quickPresetsList = document.getElementById('quick-presets-list');
+    const quickPresetsMobileSelect = document.getElementById('quick-presets-mobile-select');
 
     // Results Elements
     const radialBar = document.getElementById('radial-bar');
@@ -309,21 +310,45 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================
-    // 4. Quick Presets Carousel
+    // 4. Quick Presets Carousel & Mobile Select
     // ==========================================
     function renderQuickPresets() {
-        if (!quickPresetsList) return;
-        quickPresetsList.innerHTML = '';
-        
-        FOOD_PRESETS.slice(0, 8).forEach(preset => {
-            const chip = document.createElement('button');
-            chip.className = 'preset-chip';
-            chip.type = 'button';
-            chip.innerHTML = `<span>${preset.name}</span>`;
-            chip.addEventListener('click', () => {
-                loadPresetIntoCalculator(preset);
+        const presets = window.FOOD_PRESETS || [];
+
+        // 1. Tablet & Desktop: Chips Carousel
+        if (quickPresetsList) {
+            quickPresetsList.innerHTML = '';
+            presets.slice(0, 8).forEach(preset => {
+                const chip = document.createElement('button');
+                chip.className = 'preset-chip';
+                chip.type = 'button';
+                chip.innerHTML = `<span>${preset.name}</span>`;
+                chip.addEventListener('click', () => {
+                    loadPresetIntoCalculator(preset);
+                });
+                quickPresetsList.appendChild(chip);
             });
-            quickPresetsList.appendChild(chip);
+        }
+
+        // 2. Mobile: Select Dropdown
+        if (quickPresetsMobileSelect) {
+            let optionsHTML = '<option value="">⚡ Testar Alimento de Referência...</option>';
+            presets.forEach(p => {
+                optionsHTML += `<option value="${p.id}">${p.name} (${p.protein}g prot / ${p.calories}kcal)</option>`;
+            });
+            quickPresetsMobileSelect.innerHTML = optionsHTML;
+        }
+    }
+
+    if (quickPresetsMobileSelect) {
+        quickPresetsMobileSelect.addEventListener('change', () => {
+            const selectedId = quickPresetsMobileSelect.value;
+            if (!selectedId) return;
+            const presets = window.FOOD_PRESETS || [];
+            const item = presets.find(p => p.id === selectedId);
+            if (item) {
+                loadPresetIntoCalculator(item);
+            }
         });
     }
 
@@ -947,7 +972,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            let text = `🛒 *Minha Lista de Proteínas (NutriProtein)*\n\n`;
+            let text = `🛒 *Minha Lista de Proteínas (HingurLab)*\n\n`;
             cart.forEach(item => {
                 text += `• ${item.quantity}x ${item.name} (${item.proteinPercentage}% Prot)\n`;
             });
@@ -957,7 +982,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (navigator.share) {
                 navigator.share({
-                    title: 'Lista de Proteínas - NutriProtein',
+                    title: 'Lista de Proteínas - HingurLab',
                     text: text
                 }).catch(() => {});
             } else {

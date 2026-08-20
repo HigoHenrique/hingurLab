@@ -1,4 +1,4 @@
-# 🥗 NutriProtein - Calculadora de Eficiência Proteica & Custo-Benefício
+# 🥗 HingurLab - Calculadora de Eficiência Proteica & Custo-Benefício
 
 > **Tome decisões inteligentes no supermercado:** descubra se o alimento compensa as calorias e o preço pela quantidade de proteína, ou se é apenas um "falso saudável" com rótulo apelativo.
 

@@ -1,6 +1,6 @@
 {
-  "name": "NutriProtein - Calculadora de Proteína",
-  "short_name": "NutriProtein",
+  "name": "HingurLab - Calculadora de Proteína",
+  "short_name": "HingurLab",
   "description": "Calculadora de eficiência proteica e custo-benefício de alimentos no supermercado.",
   "start_url": "./index.html",
   "display": "standalone",
