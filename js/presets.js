@@ -10,18 +10,26 @@
 window.APP_CONFIG = {
     /**
      * ATIVAR_DADOS:
-     * - true  -> Exibe todas as opções de alimentos de referência (Aba de Alimentos, Teste Rápido, Duelo).
-     * - false -> Remove COMPLETAMENTE todos os alimentos de referência do site inteiro,
-     *            transformando o HingurLab em uma calculadora 100% pura e focada.
+     * - Injetado com segurança via variável de ambiente (window.ENV / window.__ENV__).
+     * - Aceita true/false ou "true"/"false"/"1"/"0".
      */
-    ATIVAR_DADOS: true,
+    ATIVAR_DADOS: (() => {
+        if (typeof window === 'undefined') return true;
+        const val = window.ENV?.ATIVAR_DADOS ?? window.__ENV__?.ATIVAR_DADOS;
+        if (val === undefined || val === null || val === '') return true;
+        if (typeof val === 'boolean') return val;
+        if (typeof val === 'string') {
+            const lower = val.trim().toLowerCase();
+            return lower === 'true' || lower === '1' || lower === 'sim';
+        }
+        return Boolean(val);
+    })(),
 
     /**
-     * GIST_FOOD_DATABASE_URL (opcional):
-     * - Cole aqui a URL 'raw' ou o link do seu GitHub Gist para carregar
-     *   os alimentos da nuvem em tempo real para todos os usuários sem precisar de deploy.
+     * GIST_FOOD_DATABASE_URL:
+     * - Injetado com segurança via variável de ambiente (window.ENV / window.__ENV__).
      */
-    GIST_FOOD_DATABASE_URL: ''
+    GIST_FOOD_DATABASE_URL: (typeof window !== 'undefined' && (window.ENV?.GIST_FOOD_DATABASE_URL || window.__ENV__?.GIST_FOOD_DATABASE_URL)) || ''
 };
 
 const DEFAULT_CATEGORIES = {
@@ -250,37 +258,76 @@ let FOOD_PRESETS = [...DEFAULT_PRESETS];
  * Em file:// usa os dados embutidos instantaneamente com zero erros de CORS.
  */
 async function loadPresets() {
-    // 1. Se estiver configurado um Gist público na nuvem, busca direto da nuvem
+    // 1. Se estiver configurado um Gist público na nuvem, busca direto do Gist
     if (window.APP_CONFIG && window.APP_CONFIG.GIST_FOOD_DATABASE_URL) {
         try {
-            let gistUrl = window.APP_CONFIG.GIST_FOOD_DATABASE_URL.trim();
-            if (gistUrl) {
-                // Adiciona timestamp para ignorar cache do CDN
-                const separator = gistUrl.includes('?') ? '&' : '?';
-                const finalUrl = `${gistUrl}${separator}_t=${Date.now()}`;
+            const rawInput = window.APP_CONFIG.GIST_FOOD_DATABASE_URL.trim();
+            if (rawInput) {
+                // Extrai o ID do Gist de qualquer formato (link git, url pública ou hash)
+                const idMatch = rawInput.match(/([a-f0-9]{20,40})/i);
+                const gistId = idMatch ? idMatch[1] : rawInput;
 
-                const res = await fetch(finalUrl);
-                if (res.ok) {
-                    const cloudData = await res.json();
-                    let cloudPresets = [];
-                    let cloudCategories = { ...DEFAULT_CATEGORIES };
+                let cloudPresets = [];
+                let cloudCategories = { ...DEFAULT_CATEGORIES };
 
-                    if (Array.isArray(cloudData)) {
-                        cloudPresets = cloudData;
-                    } else if (cloudData.presets && Array.isArray(cloudData.presets)) {
-                        cloudPresets = cloudData.presets;
-                        if (cloudData.categories) {
-                            cloudCategories = { ...cloudCategories, ...cloudData.categories };
+                // Tentativa 1: Via GitHub Gist API oficial (tempo real sem cache)
+                try {
+                    const apiRes = await fetch(`https://api.github.com/gists/${gistId}?_t=${Date.now()}`);
+                    if (apiRes.ok) {
+                        const gistData = await apiRes.json();
+                        if (gistData && gistData.files) {
+                            Object.values(gistData.files).forEach(fileObj => {
+                                if (fileObj && fileObj.content) {
+                                    try {
+                                        const parsed = JSON.parse(fileObj.content);
+                                        if (Array.isArray(parsed)) {
+                                            cloudPresets = cloudPresets.concat(parsed);
+                                        } else if (parsed.presets && Array.isArray(parsed.presets)) {
+                                            cloudPresets = cloudPresets.concat(parsed.presets);
+                                            if (parsed.categories) {
+                                                cloudCategories = { ...cloudCategories, ...parsed.categories };
+                                            }
+                                        }
+                                    } catch (parseErr) {
+                                        console.warn('[HingurLab] Erro ao processar arquivo do Gist:', fileObj.filename, parseErr);
+                                    }
+                                }
+                            });
                         }
                     }
+                } catch (apiErr) {
+                    console.warn('[HingurLab] Tentando endpoint raw do Gist...', apiErr);
+                }
 
-                    if (cloudPresets.length > 0) {
-                        FOOD_PRESETS = cloudPresets;
-                        PRESET_CATEGORIES = cloudCategories;
-                        window.FOOD_PRESETS = FOOD_PRESETS;
-                        window.PRESET_CATEGORIES = PRESET_CATEGORIES;
-                        return { categories: PRESET_CATEGORIES, presets: FOOD_PRESETS };
+                // Tentativa 2: Fallback para URL Raw caso a API esteja indisponível
+                if (cloudPresets.length === 0) {
+                    const rawUrl = `https://gist.githubusercontent.com/raw/${gistId}/dados-alimentos.json?_t=${Date.now()}`;
+                    const rawRes = await fetch(rawUrl);
+                    if (rawRes.ok) {
+                        const parsed = await rawRes.json();
+                        if (Array.isArray(parsed)) {
+                            cloudPresets = parsed;
+                        } else if (parsed.presets && Array.isArray(parsed.presets)) {
+                            cloudPresets = parsed.presets;
+                        }
                     }
+                }
+
+                if (cloudPresets.length > 0) {
+                    // Indexa automaticamente categorias encontradas nos alimentos
+                    cloudPresets.forEach(item => {
+                        if (item.category && !Object.values(cloudCategories).includes(item.category)) {
+                            const catKey = item.category.toUpperCase().replace(/[^A-Z0-9]/g, '_');
+                            cloudCategories[catKey] = item.category;
+                        }
+                    });
+
+                    FOOD_PRESETS = cloudPresets;
+                    PRESET_CATEGORIES = cloudCategories;
+                    window.FOOD_PRESETS = FOOD_PRESETS;
+                    window.PRESET_CATEGORIES = PRESET_CATEGORIES;
+                    console.log(`[HingurLab] 🌐 ${cloudPresets.length} alimentos carregados com sucesso do GitHub Gist!`);
+                    return { categories: PRESET_CATEGORIES, presets: FOOD_PRESETS };
                 }
             }
         } catch (gistErr) {
