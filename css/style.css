@@ -870,8 +870,7 @@ input[type="number"] {
     }
 
     .nav-tabs {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        display: flex;
         width: 100%;
         max-width: 480px;
         background: transparent;
@@ -882,6 +881,8 @@ input[type="number"] {
     }
 
     .tab-btn {
+        flex: 1 1 0;
+        min-width: 0;
         flex-direction: column;
         justify-content: center;
         align-items: center;

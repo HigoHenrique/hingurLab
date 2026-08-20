@@ -99,6 +99,54 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentAnalysis = null;
 
     // ==========================================
+    // 0. App Configuration Switch (ATIVAR_DADOS)
+    // ==========================================
+    function applyAppConfig() {
+        const config = window.APP_CONFIG || { ATIVAR_DADOS: true };
+        const isDataActive = config.ATIVAR_DADOS !== undefined ? config.ATIVAR_DADOS : (config.ENABLE_FOOD_PRESETS ?? true);
+
+        if (!isDataActive) {
+            // 1. Oculta a aba de alimentos no menu de navegação
+            const presetsNavBtn = document.querySelector('[data-tab="presets"]');
+            if (presetsNavBtn) presetsNavBtn.style.display = 'none';
+
+            // 2. Oculta o conteúdo da aba de alimentos
+            const presetsTabContent = document.getElementById('tab-presets');
+            if (presetsTabContent) presetsTabContent.style.display = 'none';
+
+            // 3. Oculta a barra de testes rápidos na Calculadora Rápida
+            const quickPresetsContainer = document.getElementById('quick-presets-container');
+            if (quickPresetsContainer) quickPresetsContainer.style.display = 'none';
+
+            // 4. Oculta os seletores de carregar alimentos no Duelo A vs B
+            const duelPresetA = document.getElementById('duel-preset-a');
+            const duelPresetB = document.getElementById('duel-preset-b');
+            if (duelPresetA) duelPresetA.style.display = 'none';
+            if (duelPresetB) duelPresetB.style.display = 'none';
+
+            document.body.classList.add('presets-disabled');
+        } else {
+            const presetsNavBtn = document.querySelector('[data-tab="presets"]');
+            if (presetsNavBtn) presetsNavBtn.style.display = '';
+
+            const presetsTabContent = document.getElementById('tab-presets');
+            if (presetsTabContent) presetsTabContent.style.display = '';
+
+            const quickPresetsContainer = document.getElementById('quick-presets-container');
+            if (quickPresetsContainer) quickPresetsContainer.style.display = '';
+
+            const duelPresetA = document.getElementById('duel-preset-a');
+            const duelPresetB = document.getElementById('duel-preset-b');
+            if (duelPresetA) duelPresetA.style.display = '';
+            if (duelPresetB) duelPresetB.style.display = '';
+
+            document.body.classList.remove('presets-disabled');
+        }
+    }
+
+    applyAppConfig();
+
+    // ==========================================
     // 1. Theme Management
     // ==========================================
     const savedTheme = StorageManager.getTheme();
@@ -1051,6 +1099,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Initial setups
+    applyAppConfig();
     renderQuickPresets();
     renderPresetsFilter();
     populateDuelPresetSelectors();
@@ -1059,6 +1108,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Carregamento dinâmico e modular dos JSONs de presets
     loadPresets().then(() => {
+        applyAppConfig();
         renderQuickPresets();
         renderPresetsFilter();
         populateDuelPresetSelectors();

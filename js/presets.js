@@ -2,6 +2,28 @@
  * presets.js - Banco de referências nutricionais com suporte a execução local (file://) e web (http/https)
  */
 
+/**
+ * ==========================================================================
+ * CONFIGURAÇÃO GERAL DO APLICATIVO (HINGURLAB)
+ * ==========================================================================
+ */
+window.APP_CONFIG = {
+    /**
+     * ATIVAR_DADOS:
+     * - true  -> Exibe todas as opções de alimentos de referência (Aba de Alimentos, Teste Rápido, Duelo).
+     * - false -> Remove COMPLETAMENTE todos os alimentos de referência do site inteiro,
+     *            transformando o HingurLab em uma calculadora 100% pura e focada.
+     */
+    ATIVAR_DADOS: true,
+
+    /**
+     * GIST_FOOD_DATABASE_URL (opcional):
+     * - Cole aqui a URL 'raw' ou o link do seu GitHub Gist para carregar
+     *   os alimentos da nuvem em tempo real para todos os usuários sem precisar de deploy.
+     */
+    GIST_FOOD_DATABASE_URL: ''
+};
+
 const DEFAULT_CATEGORIES = {
     PROTEIN_POWDERS: 'Suplementos Proteicos',
     MEATS: 'Carnes, Aves & Ovos',
@@ -228,6 +250,45 @@ let FOOD_PRESETS = [...DEFAULT_PRESETS];
  * Em file:// usa os dados embutidos instantaneamente com zero erros de CORS.
  */
 async function loadPresets() {
+    // 1. Se estiver configurado um Gist público na nuvem, busca direto da nuvem
+    if (window.APP_CONFIG && window.APP_CONFIG.GIST_FOOD_DATABASE_URL) {
+        try {
+            let gistUrl = window.APP_CONFIG.GIST_FOOD_DATABASE_URL.trim();
+            if (gistUrl) {
+                // Adiciona timestamp para ignorar cache do CDN
+                const separator = gistUrl.includes('?') ? '&' : '?';
+                const finalUrl = `${gistUrl}${separator}_t=${Date.now()}`;
+
+                const res = await fetch(finalUrl);
+                if (res.ok) {
+                    const cloudData = await res.json();
+                    let cloudPresets = [];
+                    let cloudCategories = { ...DEFAULT_CATEGORIES };
+
+                    if (Array.isArray(cloudData)) {
+                        cloudPresets = cloudData;
+                    } else if (cloudData.presets && Array.isArray(cloudData.presets)) {
+                        cloudPresets = cloudData.presets;
+                        if (cloudData.categories) {
+                            cloudCategories = { ...cloudCategories, ...cloudData.categories };
+                        }
+                    }
+
+                    if (cloudPresets.length > 0) {
+                        FOOD_PRESETS = cloudPresets;
+                        PRESET_CATEGORIES = cloudCategories;
+                        window.FOOD_PRESETS = FOOD_PRESETS;
+                        window.PRESET_CATEGORIES = PRESET_CATEGORIES;
+                        return { categories: PRESET_CATEGORIES, presets: FOOD_PRESETS };
+                    }
+                }
+            }
+        } catch (gistErr) {
+            console.warn('[HingurLab] Falha ao carregar Gist, usando presets locais como fallback:', gistErr);
+        }
+    }
+
+    // 2. Se estiver em file:// retorna presets padrão locais instantâneos
     if (typeof window !== 'undefined' && window.location.protocol === 'file:') {
         return {
             categories: PRESET_CATEGORIES,
@@ -235,6 +296,7 @@ async function loadPresets() {
         };
     }
 
+    // 3. Fallback: Carrega dos arquivos JSON locais em data/
     try {
         const categoriesRes = await fetch('./data/categories.json');
         if (!categoriesRes.ok) return { categories: PRESET_CATEGORIES, presets: FOOD_PRESETS };
