@@ -2,7 +2,7 @@
  * calculator.js - Motor de cálculo nutricional e de custo-benefício
  */
 
-export const NUTRI_TIERS = {
+const NUTRI_TIERS = {
     ELITE: {
         id: 'elite',
         name: 'Nível Elite',
@@ -82,7 +82,7 @@ export const NUTRI_TIERS = {
  * @param {number} [data.price] - Preço do produto (R$)
  * @returns {Object} Resultados completos
  */
-export function calculateNutritionalMetrics(data) {
+function calculateNutritionalMetrics(data) {
     const calories = Math.max(0, Number(data.calories) || 0);
     const protein = Math.max(0, Number(data.protein) || 0);
     const carbs = Math.max(0, Number(data.carbs) || 0);
@@ -155,14 +155,9 @@ export function calculateNutritionalMetrics(data) {
         const totalProteinInPackage = servingsPerPackage * protein;
         const costPerGramProtein = price / totalProteinInPackage;
         const costPer10gProtein = costPerGramProtein * 10;
-        const costPer30gProtein = costPerGramProtein * 30; // 30g é uma dose padrão de referência (ex: scoop de whey ou bife)
+        const costPer30gProtein = costPerGramProtein * 30; // 30g é uma dose padrão de referência
         const pricePer100g = (price / totalWeight) * 100;
 
-        // Classificação do Custo por 30g de proteína:
-        // < R$ 4,00: Super Econômico (Ovo, Frango cru)
-        // R$ 4,00 a R$ 8,00: Bom custo-benefício (Whey concentrado, Patinho, Leite)
-        // R$ 8,01 a R$ 15,00: Moderado / Conveniência (Iogurtes proteicos prontos)
-        // > R$ 15,00: Caro (Barrinhas gourmet, snacks proteicos caros)
         let costVerdict = 'Preço Justo';
         let costBadgeColor = '#3b82f6';
 
@@ -214,3 +209,8 @@ export function calculateNutritionalMetrics(data) {
         }
     };
 }
+
+// Exportações Globais (compatíveis com script padrão e file://)
+window.NUTRI_TIERS = NUTRI_TIERS;
+window.calculateNutritionalMetrics = calculateNutritionalMetrics;
+window.NutriCalc = { NUTRI_TIERS, calculateNutritionalMetrics };

@@ -2,10 +2,6 @@
  * app.js - Controlador principal da interface NutriProtein
  */
 
-import { calculateNutritionalMetrics, NUTRI_TIERS } from './calculator.js';
-import { FOOD_PRESETS, PRESET_CATEGORIES, loadPresets } from './presets.js';
-import { StorageManager } from './storage.js';
-
 document.addEventListener('DOMContentLoaded', () => {
     // ---- DOM Elements ----
     const themeToggleBtn = document.getElementById('theme-toggle-btn');
@@ -271,18 +267,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Clear form
-    clearFormBtn.addEventListener('click', () => {
-        productNameInput.value = '';
-        caloriesInput.value = '';
-        proteinInput.value = '';
-        carbsInput.value = '';
-        fatInput.value = '';
-        portionInput.value = '';
-        totalWeightInput.value = '';
-        priceInput.value = '';
-        resetResultsView();
-        showToast('Formulário limpo!');
-    });
+    if (clearFormBtn) {
+        clearFormBtn.addEventListener('click', (e) => {
+            if (e) e.preventDefault();
+            productNameInput.value = '';
+            caloriesInput.value = '';
+            proteinInput.value = '';
+            carbsInput.value = '';
+            fatInput.value = '';
+            portionInput.value = '';
+            totalWeightInput.value = '';
+            priceInput.value = '';
+            currentAnalysis = null;
+            resetResultsView();
+            showToast('Formulário limpo!');
+        });
+    }
 
     // Save product to history
     saveProductBtn.addEventListener('click', () => {
@@ -784,26 +784,50 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    if (clearCartBtn) {
-        clearCartBtn.addEventListener('click', () => {
-            if (confirm('Deseja limpar todos os itens do carrinho?')) {
-                StorageManager.clearCart();
-                renderCartAndHistory();
-                updateCartBadge();
-                showToast('Carrinho limpo!');
-            }
-        });
+    function handleClearCart(e) {
+        if (e && e.preventDefault) e.preventDefault();
+        StorageManager.clearCart();
+        renderCartAndHistory();
+        updateCartBadge();
+        showToast('Carrinho limpo com sucesso!');
     }
 
-    if (clearHistoryBtn) {
-        clearHistoryBtn.addEventListener('click', () => {
-            if (confirm('Deseja limpar o histórico de análises?')) {
-                StorageManager.clearHistory();
-                renderCartAndHistory();
-                showToast('Histórico limpo!');
-            }
-        });
+    function handleClearHistory(e) {
+        if (e && e.preventDefault) e.preventDefault();
+        StorageManager.clearHistory();
+        renderCartAndHistory();
+        showToast('Histórico limpo com sucesso!');
     }
+
+    function handleClearForm(e) {
+        if (e && e.preventDefault) e.preventDefault();
+        if (productNameInput) productNameInput.value = '';
+        if (caloriesInput) caloriesInput.value = '';
+        if (proteinInput) proteinInput.value = '';
+        if (carbsInput) carbsInput.value = '';
+        if (fatInput) fatInput.value = '';
+        if (portionInput) portionInput.value = '';
+        if (totalWeightInput) totalWeightInput.value = '';
+        if (priceInput) priceInput.value = '';
+        currentAnalysis = null;
+        resetResultsView();
+        showToast('Formulário limpo!');
+    }
+
+    // Delegação de cliques no documento para máxima resiliência
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('#clear-cart-btn')) {
+            handleClearCart(e);
+        } else if (e.target.closest('#clear-history-btn')) {
+            handleClearHistory(e);
+        } else if (e.target.closest('#clear-form-btn')) {
+            handleClearForm(e);
+        }
+    });
+
+    window.clearNutriCart = handleClearCart;
+    window.clearNutriHistory = handleClearHistory;
+    window.clearNutriForm = handleClearForm;
 
     if (shareCartBtn) {
         shareCartBtn.addEventListener('click', () => {
@@ -884,7 +908,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // 10. Service Worker Registration (PWA)
     // ==========================================
-    if ('serviceWorker' in navigator) {
+    if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('./sw.js')
                 .then(reg => console.log('Service Worker registrado:', reg.scope))

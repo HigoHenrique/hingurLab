@@ -8,7 +8,7 @@ const STORAGE_KEYS = {
     SETTINGS: 'nutriprotein_settings_v1'
 };
 
-export const StorageManager = {
+const StorageManager = {
     // ---- HISTÓRICO DE ANÁLISES ----
     getHistory() {
         try {
@@ -50,7 +50,12 @@ export const StorageManager = {
     },
 
     clearHistory() {
-        localStorage.removeItem(STORAGE_KEYS.HISTORY);
+        try {
+            localStorage.removeItem(STORAGE_KEYS.HISTORY);
+            localStorage.setItem(STORAGE_KEYS.HISTORY, JSON.stringify([]));
+        } catch (e) {
+            console.error('Erro ao limpar histórico:', e);
+        }
     },
 
     // ---- CARRINHO DE COMPRAS DO MERCADO ----
@@ -118,7 +123,12 @@ export const StorageManager = {
     },
 
     clearCart() {
-        localStorage.removeItem(STORAGE_KEYS.CART);
+        try {
+            localStorage.removeItem(STORAGE_KEYS.CART);
+            localStorage.setItem(STORAGE_KEYS.CART, JSON.stringify([]));
+        } catch (e) {
+            console.error('Erro ao limpar carrinho:', e);
+        }
     },
 
     getCartSummary() {
@@ -136,7 +146,6 @@ export const StorageManager = {
                 totalCost += (item.raw.price || 0) * q;
                 totalProteinGrams += (item.costAnalysis.totalProteinInPackage || 0) * q;
             } else if (item.raw) {
-                // Se não tem peso total, usa porção
                 totalProteinGrams += (item.raw.protein || 0) * q;
                 totalCalories += (item.raw.calories || 0) * q;
                 if (item.raw.price) totalCost += item.raw.price * q;
@@ -163,3 +172,6 @@ export const StorageManager = {
         localStorage.setItem('nutriprotein_theme', theme);
     }
 };
+
+window.StorageManager = StorageManager;
+window.NutriStorage = StorageManager;

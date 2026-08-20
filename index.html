@@ -226,7 +226,7 @@
 
                         <!-- Action Buttons -->
                         <div class="card-actions">
-                            <button type="button" class="btn btn-secondary btn-sm" id="clear-form-btn">
+                            <button type="button" class="btn btn-secondary btn-sm" id="clear-form-btn" onclick="window.clearNutriForm ? window.clearNutriForm(event) : null">
                                 🔄 Limpar
                             </button>
                             <button type="button" class="btn btn-secondary btn-sm" id="save-product-btn">
@@ -487,10 +487,10 @@
                         <p class="card-subtitle">Produtos selecionados para sua compra atual</p>
                     </div>
                     <div style="display: flex; gap: 0.5rem;">
-                        <button class="btn btn-secondary btn-sm" id="share-cart-btn">
+                        <button type="button" class="btn btn-secondary btn-sm" id="share-cart-btn">
                             📤 Compartilhar / Copiar
                         </button>
-                        <button class="btn btn-ghost btn-sm" id="clear-cart-btn">
+                        <button type="button" class="btn btn-ghost btn-sm" id="clear-cart-btn" onclick="window.clearNutriCart ? window.clearNutriCart(event) : null">
                             🗑️ Limpar
                         </button>
                     </div>
@@ -508,7 +508,7 @@
                         <h2 class="card-title">📋 Histórico de Análises Recentes</h2>
                         <p class="card-subtitle">Itens que você já calculou anteriormente</p>
                     </div>
-                    <button class="btn btn-ghost btn-sm" id="clear-history-btn">
+                    <button type="button" class="btn btn-ghost btn-sm" id="clear-history-btn" onclick="window.clearNutriHistory ? window.clearNutriHistory(event) : null">
                         Limpar Histórico
                     </button>
                 </div>
@@ -629,10 +629,10 @@
         </div>
     </footer>
 
-    <!-- Scripts (ES Modules) -->
-    <script type="module" src="./js/calculator.js"></script>
-    <script type="module" src="./js/presets.js"></script>
-    <script type="module" src="./js/storage.js"></script>
-    <script type="module" src="./js/app.js"></script>
+    <!-- Scripts (Carregamento Universal - Compatível com file:// e Web) -->
+    <script src="./js/calculator.js"></script>
+    <script src="./js/presets.js"></script>
+    <script src="./js/storage.js"></script>
+    <script src="./js/app.js"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nutriprotein-v2';
+const CACHE_NAME = 'nutriprotein-v4';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
