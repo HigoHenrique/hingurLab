@@ -1,0 +1,627 @@
+/* ==========================================================================
+   NutriProtein - Components CSS
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Score Meter & Radial Progress
+   -------------------------------------------------------------------------- */
+.score-hero-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.radial-progress-wrapper {
+    position: relative;
+    width: 170px;
+    height: 170px;
+    margin: 0 auto 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.radial-svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.radial-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.06);
+    stroke-width: 10;
+}
+
+[data-theme="light"] .radial-bg {
+    stroke: rgba(0, 0, 0, 0.06);
+}
+
+.radial-bar {
+    fill: none;
+    stroke: var(--brand-primary);
+    stroke-width: 10;
+    stroke-linecap: round;
+    stroke-dasharray: 440;
+    stroke-dashoffset: 440;
+    transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.4s ease;
+    filter: drop-shadow(0 0 8px var(--brand-glow));
+}
+
+.radial-content {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.radial-percentage {
+    font-family: var(--font-heading);
+    font-size: 2.3rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--text-main);
+}
+
+.radial-percentage-symbol {
+    font-size: 1.3rem;
+    color: var(--brand-primary);
+    margin-left: 1px;
+}
+
+.radial-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+}
+
+/* --------------------------------------------------------------------------
+   2. Tier Verdict Card
+   -------------------------------------------------------------------------- */
+.verdict-badge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: var(--radius-full);
+    font-family: var(--font-heading);
+    font-size: 0.92rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    transition: all var(--transition-smooth);
+}
+
+.verdict-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.verdict-desc {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+    max-width: 440px;
+    margin: 0 auto 1.25rem;
+}
+
+.verdict-examples {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0.5rem 0.85rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+    max-width: 440px;
+    margin: 0 auto;
+}
+
+/* --------------------------------------------------------------------------
+   3. Key Metric Stat Cards
+   -------------------------------------------------------------------------- */
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.85rem;
+    margin: 1.5rem 0;
+    width: 100%;
+}
+
+.stat-box {
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1rem;
+    text-align: left;
+    transition: all var(--transition-fast);
+}
+
+.stat-box:hover {
+    border-color: var(--border-focus);
+    background: var(--bg-card-hover);
+}
+
+.stat-box-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.25rem;
+}
+
+.stat-box-value {
+    font-family: var(--font-heading);
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--text-main);
+    display: flex;
+    align-items: baseline;
+    gap: 0.2rem;
+}
+
+.stat-box-unit {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-dim);
+}
+
+/* --------------------------------------------------------------------------
+   4. Macro Split Visualization Bar
+   -------------------------------------------------------------------------- */
+.macro-section {
+    margin: 1.5rem 0;
+    width: 100%;
+}
+
+.macro-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 0.6rem;
+}
+
+.macro-bar-container {
+    height: 14px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-full);
+    display: flex;
+    overflow: hidden;
+    gap: 2px;
+}
+
+.macro-bar-segment {
+    height: 100%;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.macro-bar-segment.protein { background-color: var(--color-protein); }
+.macro-bar-segment.carbs { background-color: var(--color-carbs); }
+.macro-bar-segment.fat { background-color: var(--color-fat); }
+
+.macro-legend {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 0.85rem;
+    gap: 0.5rem;
+}
+
+.macro-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.legend-dot.protein { background: var(--color-protein); }
+.legend-dot.carbs { background: var(--color-carbs); }
+.legend-dot.fat { background: var(--color-fat); }
+
+/* --------------------------------------------------------------------------
+   5. Cost-Benefit Card
+   -------------------------------------------------------------------------- */
+.cost-card {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(6, 182, 212, 0.05));
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    width: 100%;
+}
+
+.cost-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.85rem;
+}
+
+.cost-card-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.cost-badge {
+    padding: 0.3rem 0.75rem;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: white;
+}
+
+.cost-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    text-align: center;
+}
+
+@media (max-width: 480px) {
+    .cost-metrics-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.cost-stat-item {
+    background: var(--bg-card);
+    padding: 0.75rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+}
+
+.cost-stat-val {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--brand-primary);
+}
+
+.cost-stat-sub {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    margin-top: 0.2rem;
+}
+
+/* --------------------------------------------------------------------------
+   6. Product Comparison Module (A vs B Duel)
+   -------------------------------------------------------------------------- */
+.comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    position: relative;
+}
+
+@media (max-width: 768px) {
+    .comparison-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.comparison-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem;
+    position: relative;
+    transition: all var(--transition-smooth);
+}
+
+.comparison-card.winner {
+    border-color: var(--brand-primary);
+    box-shadow: 0 0 25px rgba(16, 185, 129, 0.2);
+}
+
+.winner-ribbon {
+    position: absolute;
+    top: -12px;
+    right: 1.5rem;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #061811;
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 0.35rem 0.85rem;
+    border-radius: var(--radius-full);
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.comparison-vs-badge {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 44px;
+    height: 44px;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-weight: 900;
+    font-size: 0.9rem;
+    color: var(--brand-primary);
+    z-index: 10;
+    box-shadow: var(--card-shadow);
+}
+
+@media (max-width: 768px) {
+    .comparison-vs-badge {
+        position: relative;
+        left: auto;
+        top: auto;
+        transform: none;
+        margin: 0.5rem auto;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   7. Preset Benchmark Cards & Search
+   -------------------------------------------------------------------------- */
+.presets-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.filter-pill {
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-full);
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.filter-pill:hover, .filter-pill.active {
+    background: var(--brand-primary);
+    color: #061811;
+    border-color: var(--brand-primary);
+}
+
+.presets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+}
+
+.preset-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all var(--transition-fast);
+    cursor: pointer;
+}
+
+.preset-card:hover {
+    border-color: var(--brand-primary);
+    transform: translateY(-3px);
+    box-shadow: var(--glow-shadow);
+}
+
+.preset-card-category {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--brand-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.35rem;
+}
+
+.preset-card-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.preset-card-macros {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 0.85rem;
+}
+
+.preset-card-notes {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    line-height: 1.4;
+    margin-bottom: 1rem;
+    flex-grow: 1;
+}
+
+/* --------------------------------------------------------------------------
+   8. Shopping Cart & History Drawer / List
+   -------------------------------------------------------------------------- */
+.cart-summary-banner {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(6, 182, 212, 0.12));
+    border: 1px solid var(--border-focus);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem;
+    margin-bottom: 1.75rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+    text-align: center;
+}
+
+.cart-item-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    transition: all var(--transition-fast);
+}
+
+.cart-item-card:hover {
+    border-color: var(--border-focus);
+}
+
+.cart-item-info {
+    flex-grow: 1;
+}
+
+.cart-item-name {
+    font-size: 0.98rem;
+    font-weight: 700;
+}
+
+.cart-item-sub {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.2rem;
+}
+
+.cart-item-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.qty-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.qty-btn:hover {
+    background: var(--brand-primary);
+    color: #061811;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3.5rem 1.5rem;
+    color: var(--text-muted);
+}
+
+.empty-state-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.empty-state-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+}
+
+.empty-state-desc {
+    font-size: 0.88rem;
+    max-width: 380px;
+    margin: 0 auto 1.5rem;
+}
+
+/* --------------------------------------------------------------------------
+   9. Modal & Educational Guide
+   -------------------------------------------------------------------------- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: var(--glass-blur);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-smooth);
+}
+
+.modal-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    width: 100%;
+    max-width: 580px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 2rem;
+    box-shadow: var(--glass-shadow);
+    transform: scale(0.95);
+    transition: transform var(--transition-bounce);
+}
+
+.modal-overlay.open .modal-card {
+    transform: scale(1);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.guide-tier-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: var(--radius-lg);
+    margin-bottom: 0.75rem;
+    border: 1px solid var(--border-subtle);
+}
