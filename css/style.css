@@ -115,9 +115,9 @@ body {
 /* Container */
 .container {
     width: 100%;
-    max-width: 1160px;
+    max-width: 1240px;
     margin: 0 auto;
-    padding: 0 1.25rem;
+    padding: 0 1.5rem;
 }
 
 /* Typography Utilities */
@@ -322,10 +322,17 @@ h1, h2, h3, h4, h5, h6 {
 /* Grid Layouts */
 .calc-grid {
     display: grid;
-    grid-template-columns: 1fr 1.15fr;
-    gap: 1.75rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
     align-items: start;
     margin-bottom: 3rem;
+}
+
+@media (min-width: 901px) {
+    .calc-grid > .glass-card:last-child {
+        position: sticky;
+        top: 85px;
+    }
 }
 
 @media (max-width: 900px) {
@@ -373,42 +380,90 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Form Controls & Inputs */
 .form-group {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.15rem;
+    display: flex;
+    flex-direction: column;
 }
 
 .form-label {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.88rem;
+    font-size: 0.82rem;
     font-weight: 600;
     color: var(--text-main);
     margin-bottom: 0.45rem;
+    height: 22px;
+    line-height: 1;
+    gap: 0.5rem;
+}
+
+.label-left {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-wrap: nowrap;
+    white-space: nowrap;
 }
 
 .form-label .helper {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 400;
     color: var(--text-dim);
+    white-space: nowrap;
+}
+
+.essential-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: var(--brand-primary);
+    background: rgba(16, 185, 129, 0.15);
+    padding: 0.15rem 0.45rem;
+    border-radius: var(--radius-full);
+    white-space: nowrap;
+    line-height: 1.1;
+}
+
+.optional-badge {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--text-dim);
+    white-space: nowrap;
 }
 
 .input-wrapper {
     position: relative;
     display: flex;
     align-items: center;
+    width: 100%;
+}
+
+/* Clean, modern input styling with native spinners hidden */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
 }
 
 .form-control {
     width: 100%;
-    height: 50px;
-    padding: 0.75rem 1rem;
-    padding-right: 3rem;
+    height: 48px;
+    padding: 0.65rem 0.95rem;
+    padding-right: 2.85rem;
     background-color: var(--bg-input);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
     color: var(--text-main);
     font-family: var(--font-body);
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     font-weight: 600;
     transition: all var(--transition-fast);
 }
@@ -422,11 +477,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .input-unit {
     position: absolute;
-    right: 1rem;
-    font-size: 0.88rem;
+    right: 0.9rem;
+    font-size: 0.84rem;
     font-weight: 600;
     color: var(--text-dim);
     pointer-events: none;
+    user-select: none;
 }
 
 /* Multi-column form fields */
@@ -438,8 +494,14 @@ h1, h2, h3, h4, h5, h6 {
 
 .form-row-3 {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 0.75rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.85rem;
+}
+
+@media (max-width: 680px) {
+    .form-row-3 {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* Accordion / Collapsible section */

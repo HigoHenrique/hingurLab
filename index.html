@@ -1,34 +1,40 @@
 <!DOCTYPE html>
 <html lang="pt-BR" data-theme="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#10b981">
-    
+
     <!-- SEO & Metadata -->
     <title>NutriProtein - Calculadora de Eficiência Proteica & Custo-Benefício</title>
-    <meta name="description" content="Descubra se o produto do supermercado realmente vale a pena pela proteína ou se é um 'falso saudável'. Calcule densidade proteica, macros e custo por grama de proteína.">
-    <meta name="keywords" content="calculadora de proteina, densidade proteica, dieta, hipertrofia, tabela nutricional, supermercado, whey protein, custo por proteina">
+    <meta name="description"
+        content="Descubra se o produto do supermercado realmente vale a pena pela proteína ou se é um 'falso saudável'. Calcule densidade proteica, macros e custo por grama de proteína.">
+    <meta name="keywords"
+        content="calculadora de proteina, densidade proteica, dieta, hipertrofia, tabela nutricional, supermercado, whey protein, custo por proteina">
     <meta name="author" content="NutriProtein App">
-    
+
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="NutriProtein - Calculadora de Proteína no Supermercado">
-    <meta property="og:description" content="Analise rótulos nutricionais instantaneamente e descubra se o alimento compensa as calorias e o preço!">
-    
+    <meta property="og:description"
+        content="Analise rótulos nutricionais instantaneamente e descubra se o alimento compensa as calorias e o preço!">
+
     <!-- PWA & Mobile Web App -->
     <link rel="manifest" href="./manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="NutriProtein">
-    
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/components.css">
-    
+
     <!-- Favicon SVG -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2310b981'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>">
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2310b981'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>">
 </head>
+
 <body>
 
     <!-- ==========================================
@@ -38,7 +44,8 @@
         <div class="container header-inner">
             <a href="#" class="logo-brand" id="logo-refresh">
                 <div class="logo-icon-wrapper">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
                         <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
                         <line x1="3" y1="6" x2="21" y2="6"></line>
                         <path d="M16 10a4 4 0 0 1-8 0"></path>
@@ -52,7 +59,8 @@
 
             <div class="header-actions">
                 <button class="btn-icon" id="open-guide-btn" title="Como Funciona a Avaliação">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10"></circle>
                         <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
                         <line x1="12" y1="17" x2="12.01" y2="17"></line>
@@ -74,20 +82,44 @@
         <nav class="nav-tabs-wrapper" aria-label="Navegação Principal">
             <div class="nav-tabs">
                 <button class="tab-btn active" data-tab="calc">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="2" width="16" height="20" rx="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16" y2="18"></line><path d="M16 10h.01"></path><path d="M12 10h.01"></path><path d="M8 10h.01"></path><path d="M12 14h.01"></path><path d="M8 14h.01"></path><path d="M12 18h.01"></path><path d="M8 18h.01"></path></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <rect x="4" y="2" width="16" height="20" rx="2"></rect>
+                        <line x1="8" y1="6" x2="16" y2="6"></line>
+                        <line x1="16" y1="14" x2="16" y2="18"></line>
+                        <path d="M16 10h.01"></path>
+                        <path d="M12 10h.01"></path>
+                        <path d="M8 10h.01"></path>
+                        <path d="M12 14h.01"></path>
+                        <path d="M8 14h.01"></path>
+                        <path d="M12 18h.01"></path>
+                        <path d="M8 18h.01"></path>
+                    </svg>
                     <span>Calculadora Rápida</span>
                 </button>
                 <button class="tab-btn" data-tab="compare">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 3h5v5"></path><path d="M4 20L21 3"></path><path d="M21 16v5h-5"></path><path d="M15 15l6 6"></path><path d="M4 4l5 5"></path></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M16 3h5v5"></path>
+                        <path d="M4 20L21 3"></path>
+                        <path d="M21 16v5h-5"></path>
+                        <path d="M15 15l6 6"></path>
+                        <path d="M4 4l5 5"></path>
+                    </svg>
                     <span>Duelo (A vs B)</span>
                 </button>
                 <button class="tab-btn" data-tab="cart">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
                     <span>Carrinho & Histórico</span>
                     <span class="badge-counter" id="cart-counter-badge" style="display: none;">0</span>
                 </button>
                 <button class="tab-btn" data-tab="presets">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
                     <span>Alimentos de Referência</span>
                 </button>
             </div>
@@ -99,7 +131,8 @@
         <section class="tab-content active" id="tab-calc">
             <!-- Quick Presets Chips -->
             <div style="margin-bottom: 0.75rem;">
-                <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.35rem;">
+                <div
+                    style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.35rem;">
                     <span>⚡ Teste Rápido com Referências:</span>
                 </div>
                 <div class="presets-carousel" id="quick-presets-list">
@@ -113,7 +146,14 @@
                     <div class="card-header">
                         <div>
                             <h2 class="card-title">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
                                 Rótulo do Alimento
                             </h2>
                             <p class="card-subtitle">Copie os valores da tabela nutricional na embalagem</p>
@@ -121,35 +161,69 @@
                     </div>
 
                     <form id="quick-calc-form" onsubmit="event.preventDefault();">
+                        <!-- Guia Visual de Preenchimento Rápido -->
+                        <div class="nutrition-guide-callout">
+                            <div class="callout-header">
+                                <span class="callout-badge">💡 Guia do Rótulo em 2 Passos</span>
+                                <span class="callout-tip">Pode usar a coluna de 100g OU da Porção!</span>
+                            </div>
+                            <div class="guide-steps-grid">
+                                <div class="guide-step-card highlight">
+                                    <div class="step-num">1</div>
+                                    <div class="step-text">
+                                        <strong>Valor Energético (kcal)</strong>
+                                        <span>Calorias do rótulo</span>
+                                    </div>
+                                </div>
+                                <div class="guide-step-card highlight">
+                                    <div class="step-num">2</div>
+                                    <div class="step-text">
+                                        <strong>Proteínas (g)</strong>
+                                        <span>Gramas de proteína</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Product Name -->
                         <div class="form-group">
                             <label class="form-label" for="product-name">
                                 <span>Nome do Produto</span>
-                                <span class="helper">Opcional</span>
+                                <span class="optional-badge">(Opcional)</span>
                             </label>
-                            <input type="text" id="product-name" class="form-control" placeholder="Ex: Iogurte Grego, Barra Y, Frango..." autocomplete="off">
+                            <input type="text" id="product-name" class="form-control"
+                                placeholder="Ex: Iogurte Grego, Barra Y, Frango..." autocomplete="off">
                         </div>
 
                         <!-- Main Row: Calories & Protein -->
                         <div class="form-row-2">
                             <div class="form-group">
                                 <label class="form-label" for="calories">
-                                    <span>Valor Energético *</span>
-                                    <span class="helper">Calorias</span>
+                                    <span class="label-left">
+                                        <span>Calorias</span>
+                                        <span class="essential-badge">✨ Obrigatório</span>
+                                    </span>
+                                    <span class="helper">kcal</span>
                                 </label>
                                 <div class="input-wrapper">
-                                    <input type="number" id="calories" class="form-control" placeholder="0" min="0" step="any" inputmode="decimal" required>
+                                    <input type="number" id="calories" class="form-control" placeholder="Ex: 120"
+                                        min="0" step="any" inputmode="decimal" required>
                                     <span class="input-unit">kcal</span>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label class="form-label" for="protein">
-                                    <span>Proteínas *</span>
-                                    <span class="helper">Grama</span>
+                                    <span class="label-left">
+                                        <span>Proteínas</span>
+                                        <span class="essential-badge">✨ Obrigatório</span>
+                                    </span>
+                                    <span class="helper">g</span>
                                 </label>
                                 <div class="input-wrapper">
-                                    <input type="number" id="protein" class="form-control" placeholder="0" min="0" step="any" inputmode="decimal" style="border-color: rgba(16, 185, 129, 0.4);" required>
+                                    <input type="number" id="protein" class="form-control" placeholder="Ex: 24" min="0"
+                                        step="any" inputmode="decimal" style="border-color: rgba(16, 185, 129, 0.4);"
+                                        required>
                                     <span class="input-unit">g</span>
                                 </div>
                             </div>
@@ -160,10 +234,11 @@
                             <div class="form-group">
                                 <label class="form-label" for="carbs">
                                     <span>Carboidratos</span>
-                                    <span class="helper">Opcional</span>
+                                    <span class="optional-badge">(Opcional)</span>
                                 </label>
                                 <div class="input-wrapper">
-                                    <input type="number" id="carbs" class="form-control" placeholder="0" min="0" step="any" inputmode="decimal">
+                                    <input type="number" id="carbs" class="form-control" placeholder="0" min="0"
+                                        step="any" inputmode="decimal">
                                     <span class="input-unit">g</span>
                                 </div>
                             </div>
@@ -171,62 +246,82 @@
                             <div class="form-group">
                                 <label class="form-label" for="fat">
                                     <span>Gorduras Totais</span>
-                                    <span class="helper">Opcional</span>
+                                    <span class="optional-badge">(Opcional)</span>
                                 </label>
                                 <div class="input-wrapper">
-                                    <input type="number" id="fat" class="form-control" placeholder="0" min="0" step="any" inputmode="decimal">
+                                    <input type="number" id="fat" class="form-control" placeholder="0" min="0"
+                                        step="any" inputmode="decimal">
                                     <span class="input-unit">g</span>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Collapsible: Cost & Package Info -->
+                        <!-- Collapsible: Cost & Package Info (Open by default) -->
                         <div class="collapsible-section">
-                            <button type="button" class="collapsible-trigger" id="cost-section-toggle">
+                            <button type="button" class="collapsible-trigger open" id="cost-section-toggle">
                                 <span style="display: flex; align-items: center; gap: 0.5rem;">
                                     💰 Custo & Embalagem (Análise Financeira)
                                 </span>
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
                             </button>
 
-                            <div class="collapsible-content" id="cost-section-content">
+                            <div class="collapsible-content open" id="cost-section-content">
                                 <div class="form-row-3">
                                     <div class="form-group">
                                         <label class="form-label" for="portion">
                                             <span>Porção</span>
+                                            <span class="helper">g / ml</span>
                                         </label>
                                         <div class="input-wrapper">
-                                            <input type="number" id="portion" class="form-control" placeholder="30" min="0" step="any" inputmode="decimal">
+                                            <input type="number" id="portion" class="form-control" placeholder="Ex: 30"
+                                                min="0" step="any" inputmode="decimal">
                                             <span class="input-unit">g/ml</span>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="form-label" for="total-weight">
-                                            <span>Peso Total</span>
+                                            <span>Peso Líquido</span>
+                                            <span class="helper">Total</span>
                                         </label>
                                         <div class="input-wrapper">
-                                            <input type="number" id="total-weight" class="form-control" placeholder="900" min="0" step="any" inputmode="decimal">
+                                            <input type="number" id="total-weight" class="form-control"
+                                                placeholder="Ex: 900" min="0" step="any" inputmode="decimal">
                                             <span class="input-unit">g/ml</span>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="form-label" for="price">
-                                            <span>Preço</span>
+                                            <span>Preço Total</span>
+                                            <span class="helper">R$</span>
                                         </label>
                                         <div class="input-wrapper">
-                                            <input type="number" id="price" class="form-control" placeholder="9.90" min="0" step="any" inputmode="decimal">
+                                            <input type="number" id="price" class="form-control" placeholder="Ex: 9.90"
+                                                min="0" step="any" inputmode="decimal">
                                             <span class="input-unit">R$</span>
                                         </div>
                                     </div>
+                                </div>
+
+                                <div class="finance-helper-tip">
+                                    🔍 <strong>Onde achar essas informações no supermercado?</strong><br>
+                                    • <strong>Porção:</strong> Fica na 1ª linha da tabela nutricional (ex: <em>30g</em>,
+                                    <em>2 colheres</em> ou <em>100g</em> se usar a 1ª coluna).<br>
+                                    • <strong>Peso Líquido:</strong> Fica impresso bem grande na frente da embalagem
+                                    (ex: <em>900g</em>, <em>250ml</em>, <em>1kg</em>).<br>
+                                    • <strong>Preço:</strong> Valor na etiqueta da prateleira (ex: <em>R$ 14,90</em>).
                                 </div>
                             </div>
                         </div>
 
                         <!-- Action Buttons -->
                         <div class="card-actions">
-                            <button type="button" class="btn btn-secondary btn-sm" id="clear-form-btn" onclick="window.clearNutriForm ? window.clearNutriForm(event) : null">
+                            <button type="button" class="btn btn-secondary btn-sm" id="clear-form-btn"
+                                onclick="window.clearNutriForm ? window.clearNutriForm(event) : null">
                                 🔄 Limpar
                             </button>
                             <button type="button" class="btn btn-secondary btn-sm" id="save-product-btn">
@@ -291,8 +386,9 @@
 
                         <!-- Macro Distribution Bar -->
                         <div class="macro-section">
-                            <div class="macro-header">
-                                <span>Divisão de Calorias (Macros)</span>
+                            <div class="macro-header" style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>Distribuição Calórica de Macros</span>
+                                <span style="font-size: 0.72rem; color: var(--text-muted); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border-color); cursor: help;" title="Distribuição calórica: percentual das calorias totais (% das kcal) fornecidas por cada macronutriente">ℹ️ % das calorias</span>
                             </div>
                             <div class="macro-bar-container">
                                 <div class="macro-bar-segment protein" id="macro-bar-protein" style="width: 0%;"></div>
@@ -347,64 +443,123 @@
              TAB 2: DUELO DE PRODUTOS (A vs B)
              ========================================== -->
         <section class="tab-content" id="tab-compare">
-            <div style="text-align: center; margin-bottom: 1.5rem;">
+            <div style="text-align: center; margin-bottom: 1rem;">
                 <h2 style="font-size: 1.6rem; font-weight: 800;">⚔️ Duelo de Produtos Lado a Lado</h2>
-                <p style="color: var(--text-muted); font-size: 0.9rem; max-width: 500px; margin: 0.25rem auto 0;">
-                    Ficou em dúvida entre duas marcas no supermercado? Compare e veja qual tem mais proteína por caloria e melhor custo!
+                <p style="color: var(--text-muted); font-size: 0.9rem; max-width: 540px; margin: 0.25rem auto 0.75rem;">
+                    Ficou em dúvida entre duas marcas no supermercado? Compare e veja qual tem mais proteína por caloria
+                    e melhor custo financeiro!
                 </p>
+                <div class="duel-top-actions">
+                    <button type="button" class="btn btn-secondary btn-sm" id="clear-comp-both-btn"
+                        onclick="window.clearDuelBoth ? window.clearDuelBoth(event) : null">
+                        🔄 Novo Duelo (Limpar Ambos)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Guia Visual de Preenchimento Rápido no Duelo -->
+            <div class="nutrition-guide-callout" style="max-width: 800px; margin: 0 auto 1.5rem;">
+                <div class="callout-header">
+                    <span class="callout-badge">💡 Guia do Rótulo para o Duelo</span>
+                    <span class="callout-tip">Basta preencher Calorias e Proteínas de cada opção!</span>
+                </div>
+                <div class="guide-steps-grid">
+                    <div class="guide-step-card highlight">
+                        <div class="step-num">1</div>
+                        <div class="step-text">
+                            <strong>Valor Energético (kcal)</strong>
+                            <span>Calorias do rótulo do Produto A e B</span>
+                        </div>
+                    </div>
+                    <div class="guide-step-card highlight">
+                        <div class="step-num">2</div>
+                        <div class="step-text">
+                            <strong>Proteínas (g)</strong>
+                            <span>Gramas de proteína do Produto A e B</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Live Verdict Banner -->
-            <div id="comp-result-banner" class="glass-card" style="display: none; margin-bottom: 1.5rem; background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(6, 182, 212, 0.15)); border-color: var(--brand-primary); text-align: center; font-size: 1.05rem; line-height: 1.6;">
+            <div id="comp-result-banner" class="glass-card"
+                style="display: none; margin-bottom: 1.5rem; background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(6, 182, 212, 0.15)); border-color: var(--brand-primary); text-align: center; font-size: 1.05rem; line-height: 1.6;">
                 <!-- Populated by JS -->
             </div>
 
             <div class="comparison-grid">
                 <!-- Product A -->
                 <div class="comparison-card" id="comp-card-a">
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
-                        <h3 style="font-size: 1.2rem; color: var(--brand-primary);">Produto A</h3>
-                        <span style="font-size: 0.75rem; color: var(--text-dim);">Opção 1</span>
+                    <div class="duel-card-header">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <h3 style="font-size: 1.2rem; color: var(--brand-primary);">Produto A</h3>
+                            <span style="font-size: 0.75rem; color: var(--text-dim);">Opção 1</span>
+                        </div>
+                        <button type="button" class="btn btn-ghost btn-sm" id="clear-comp-a-btn"
+                            onclick="window.clearDuelA ? window.clearDuelA(event) : null" title="Limpar Produto A">
+                            🔄 Limpar A
+                        </button>
                     </div>
+
+                    <select class="form-control preset-duel-select" id="duel-preset-a">
+                        <option value="">⚡ Carregar Alimento no Produto A...</option>
+                    </select>
 
                     <div class="form-group">
-                        <input type="text" id="comp-a-name" class="form-control" placeholder="Nome (Ex: Iogurte Marca X)">
+                        <input type="text" id="comp-a-name" class="form-control"
+                            placeholder="Nome (Ex: Iogurte Marca X)">
                     </div>
 
                     <div class="form-row-2">
                         <div class="form-group">
-                            <label class="form-label">Calorias *</label>
-                            <input type="number" id="comp-a-calories" class="form-control" placeholder="kcal" min="0" step="any" inputmode="decimal">
+                            <label class="form-label">
+                                <span class="label-left"><span>Calorias</span> <span
+                                        class="essential-badge">✨</span></span>
+                                <span class="helper">kcal</span>
+                            </label>
+                            <input type="number" id="comp-a-calories" class="form-control" placeholder="Ex: 150" min="0"
+                                step="any" inputmode="decimal">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Proteínas *</label>
-                            <input type="number" id="comp-a-protein" class="form-control" placeholder="g" min="0" step="any" inputmode="decimal">
+                            <label class="form-label">
+                                <span class="label-left"><span>Proteínas</span> <span
+                                        class="essential-badge">✨</span></span>
+                                <span class="helper">g</span>
+                            </label>
+                            <input type="number" id="comp-a-protein" class="form-control" placeholder="Ex: 15" min="0"
+                                step="any" inputmode="decimal">
                         </div>
                     </div>
 
                     <div class="form-row-2">
                         <div class="form-group">
-                            <label class="form-label">Carboidratos</label>
-                            <input type="number" id="comp-a-carbs" class="form-control" placeholder="g" min="0" step="any" inputmode="decimal">
+                            <label class="form-label"><span>Carboidratos</span> <span class="helper">g</span></label>
+                            <input type="number" id="comp-a-carbs" class="form-control" placeholder="0" min="0"
+                                step="any" inputmode="decimal">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Gorduras</label>
-                            <input type="number" id="comp-a-fat" class="form-control" placeholder="g" min="0" step="any" inputmode="decimal">
+                            <label class="form-label"><span>Gorduras</span> <span class="helper">g</span></label>
+                            <input type="number" id="comp-a-fat" class="form-control" placeholder="0" min="0" step="any"
+                                inputmode="decimal">
                         </div>
                     </div>
 
                     <div class="form-row-3" style="margin-top: 0.5rem;">
                         <div class="form-group">
-                            <label class="form-label">Porção (g)</label>
-                            <input type="number" id="comp-a-portion" class="form-control" placeholder="30" min="0" step="any" inputmode="decimal">
+                            <label class="form-label"><span>Porção</span> <span class="helper">g/ml</span></label>
+                            <input type="number" id="comp-a-portion" class="form-control" placeholder="Ex: 30" min="0"
+                                step="any" inputmode="decimal">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Peso Total (g)</label>
-                            <input type="number" id="comp-a-weight" class="form-control" placeholder="250" min="0" step="any" inputmode="decimal">
+                            <label class="form-label"><span>Peso Líquido</span> <span
+                                    class="helper">Total</span></label>
+                            <input type="number" id="comp-a-weight" class="form-control" placeholder="Ex: 250" min="0"
+                                step="any" inputmode="decimal">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Preço (R$)</label>
-                            <input type="number" id="comp-a-price" class="form-control" placeholder="7.90" min="0" step="any" inputmode="decimal">
+                            <label class="form-label"><span>Preço Total</span> <span class="helper">R$</span></label>
+                            <input type="number" id="comp-a-price" class="form-control" placeholder="Ex: 7.90" min="0"
+                                step="any" inputmode="decimal">
                         </div>
                     </div>
 
@@ -417,49 +572,76 @@
 
                 <!-- Product B -->
                 <div class="comparison-card" id="comp-card-b">
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
-                        <h3 style="font-size: 1.2rem; color: var(--brand-secondary);">Produto B</h3>
-                        <span style="font-size: 0.75rem; color: var(--text-dim);">Opção 2</span>
+                    <div class="duel-card-header">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <h3 style="font-size: 1.2rem; color: var(--brand-secondary);">Produto B</h3>
+                            <span style="font-size: 0.75rem; color: var(--text-dim);">Opção 2</span>
+                        </div>
+                        <button type="button" class="btn btn-ghost btn-sm" id="clear-comp-b-btn"
+                            onclick="window.clearDuelB ? window.clearDuelB(event) : null" title="Limpar Produto B">
+                            🔄 Limpar B
+                        </button>
                     </div>
+
+                    <select class="form-control preset-duel-select" id="duel-preset-b">
+                        <option value="">⚡ Carregar Alimento no Produto B...</option>
+                    </select>
 
                     <div class="form-group">
-                        <input type="text" id="comp-b-name" class="form-control" placeholder="Nome (Ex: Iogurte Marca Y)">
+                        <input type="text" id="comp-b-name" class="form-control"
+                            placeholder="Nome (Ex: Iogurte Marca Y)">
                     </div>
 
                     <div class="form-row-2">
                         <div class="form-group">
-                            <label class="form-label">Calorias *</label>
-                            <input type="number" id="comp-b-calories" class="form-control" placeholder="kcal" min="0" step="any" inputmode="decimal">
+                            <label class="form-label">
+                                <span class="label-left"><span>Calorias</span> <span
+                                        class="essential-badge">✨</span></span>
+                                <span class="helper">kcal</span>
+                            </label>
+                            <input type="number" id="comp-b-calories" class="form-control" placeholder="Ex: 150" min="0"
+                                step="any" inputmode="decimal">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Proteínas *</label>
-                            <input type="number" id="comp-b-protein" class="form-control" placeholder="g" min="0" step="any" inputmode="decimal">
+                            <label class="form-label">
+                                <span class="label-left"><span>Proteínas</span> <span
+                                        class="essential-badge">✨</span></span>
+                                <span class="helper">g</span>
+                            </label>
+                            <input type="number" id="comp-b-protein" class="form-control" placeholder="Ex: 10" min="0"
+                                step="any" inputmode="decimal">
                         </div>
                     </div>
 
                     <div class="form-row-2">
                         <div class="form-group">
-                            <label class="form-label">Carboidratos</label>
-                            <input type="number" id="comp-b-carbs" class="form-control" placeholder="g" min="0" step="any" inputmode="decimal">
+                            <label class="form-label"><span>Carboidratos</span> <span class="helper">g</span></label>
+                            <input type="number" id="comp-b-carbs" class="form-control" placeholder="0" min="0"
+                                step="any" inputmode="decimal">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Gorduras</label>
-                            <input type="number" id="comp-b-fat" class="form-control" placeholder="g" min="0" step="any" inputmode="decimal">
+                            <label class="form-label"><span>Gorduras</span> <span class="helper">g</span></label>
+                            <input type="number" id="comp-b-fat" class="form-control" placeholder="0" min="0" step="any"
+                                inputmode="decimal">
                         </div>
                     </div>
 
                     <div class="form-row-3" style="margin-top: 0.5rem;">
                         <div class="form-group">
-                            <label class="form-label">Porção (g)</label>
-                            <input type="number" id="comp-b-portion" class="form-control" placeholder="30" min="0" step="any" inputmode="decimal">
+                            <label class="form-label"><span>Porção</span> <span class="helper">g/ml</span></label>
+                            <input type="number" id="comp-b-portion" class="form-control" placeholder="Ex: 30" min="0"
+                                step="any" inputmode="decimal">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Peso Total (g)</label>
-                            <input type="number" id="comp-b-weight" class="form-control" placeholder="250" min="0" step="any" inputmode="decimal">
+                            <label class="form-label"><span>Peso Líquido</span> <span
+                                    class="helper">Total</span></label>
+                            <input type="number" id="comp-b-weight" class="form-control" placeholder="Ex: 250" min="0"
+                                step="any" inputmode="decimal">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Preço (R$)</label>
-                            <input type="number" id="comp-b-price" class="form-control" placeholder="8.50" min="0" step="any" inputmode="decimal">
+                            <label class="form-label"><span>Preço Total</span> <span class="helper">R$</span></label>
+                            <input type="number" id="comp-b-price" class="form-control" placeholder="Ex: 8.50" min="0"
+                                step="any" inputmode="decimal">
                         </div>
                     </div>
 
@@ -467,6 +649,18 @@
                         <!-- Populated by JS -->
                     </div>
                 </div>
+            </div>
+
+            <!-- Caixa de Ajuda de Preenchimento no Duelo -->
+            <div class="finance-helper-tip" style="max-width: 800px; margin: 1.5rem auto 0;">
+                🔍 <strong>Como comparar o custo financeiro no Duelo?</strong><br>
+                • <strong>Porção:</strong> 1ª linha da tabela no verso (ex: <em>30g</em>, <em>1 scoop</em> ou
+                <em>100g</em>).<br>
+                • <strong>Peso Total:</strong> Peso Líquido na frente da embalagem (ex: <em>900g</em>, <em>250ml</em>,
+                <em>1kg</em>).<br>
+                • <strong>Preço:</strong> Preço na etiqueta da prateleira (ex: <em>R$ 12,90</em>).<br><br>
+                <em>Preenchendo esses 3 campos em ambos os produtos, o NutriProtein calcula automaticamente qual marca
+                    entrega a dose de 30g de proteína mais barata!</em>
             </div>
         </section>
 
@@ -490,7 +684,8 @@
                         <button type="button" class="btn btn-secondary btn-sm" id="share-cart-btn">
                             📤 Compartilhar / Copiar
                         </button>
-                        <button type="button" class="btn btn-ghost btn-sm" id="clear-cart-btn" onclick="window.clearNutriCart ? window.clearNutriCart(event) : null">
+                        <button type="button" class="btn btn-ghost btn-sm" id="clear-cart-btn"
+                            onclick="window.clearNutriCart ? window.clearNutriCart(event) : null">
                             🗑️ Limpar
                         </button>
                     </div>
@@ -508,7 +703,8 @@
                         <h2 class="card-title">📋 Histórico de Análises Recentes</h2>
                         <p class="card-subtitle">Itens que você já calculou anteriormente</p>
                     </div>
-                    <button type="button" class="btn btn-ghost btn-sm" id="clear-history-btn" onclick="window.clearNutriHistory ? window.clearNutriHistory(event) : null">
+                    <button type="button" class="btn btn-ghost btn-sm" id="clear-history-btn"
+                        onclick="window.clearNutriHistory ? window.clearNutriHistory(event) : null">
                         Limpar Histórico
                     </button>
                 </div>
@@ -524,7 +720,8 @@
              ========================================== -->
         <section class="tab-content" id="tab-presets">
             <div style="margin-bottom: 1.5rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
                     <div>
                         <h2 style="font-size: 1.6rem; font-weight: 800;">📚 Guia de Alimentos & Padrões de Mercado</h2>
                         <p style="color: var(--text-muted); font-size: 0.9rem;">
@@ -532,7 +729,8 @@
                         </p>
                     </div>
                     <div style="min-width: 260px;">
-                        <input type="text" id="preset-search-input" class="form-control" placeholder="🔍 Buscar alimento...">
+                        <input type="text" id="preset-search-input" class="form-control"
+                            placeholder="🔍 Buscar alimento...">
                     </div>
                 </div>
 
@@ -563,53 +761,68 @@
 
             <div style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.6;">
                 <p style="margin-bottom: 1rem;">
-                    A maioria dos produtos no supermercado se rotula como <strong>"Rico em Proteína"</strong> ou <strong>"Fit"</strong>, mas na verdade esconde dezenas de gramas de gordura e açúcar.
+                    A maioria dos produtos no supermercado se rotula como <strong>"Rico em Proteína"</strong> ou
+                    <strong>"Fit"</strong>, mas na verdade esconde dezenas de gramas de gordura e açúcar.
                 </p>
 
-                <h4 style="color: var(--text-main); font-size: 1rem; margin: 1.25rem 0 0.5rem;">💡 A Regra dos 4 kcal por grama:</h4>
+                <h4 style="color: var(--text-main); font-size: 1rem; margin: 1.25rem 0 0.5rem;">💡 A Regra dos 4 kcal
+                    por grama:</h4>
                 <p style="margin-bottom: 1rem;">
-                    Cada 1 grama de proteína pura fornece exatamente <strong>4 kcal</strong>. Se uma barra tem 10g de proteína (40 kcal) mas o total da barra é 200 kcal, significa que <strong>apenas 20%</strong> das calorias são proteína!
+                    Cada 1 grama de proteína pura fornece exatamente <strong>4 kcal</strong>. Se uma barra tem 10g de
+                    proteína (40 kcal) mas o total da barra é 200 kcal, significa que <strong>apenas 20%</strong> das
+                    calorias são proteína!
                 </p>
 
-                <h4 style="color: var(--text-main); font-size: 1rem; margin: 1.25rem 0 0.5rem;">🏆 Classificação NutriProtein:</h4>
-                
-                <div class="guide-tier-item" style="background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3);">
+                <h4 style="color: var(--text-main); font-size: 1rem; margin: 1.25rem 0 0.5rem;">🏆 Classificação
+                    NutriProtein:</h4>
+
+                <div class="guide-tier-item"
+                    style="background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3);">
                     <div style="font-size: 1.5rem;">🏆</div>
                     <div>
                         <strong style="color: #10b981;">Nível Elite (&ge; 50% de Proteína)</strong>
-                        <p style="font-size: 0.82rem; margin-top: 0.2rem;">Padrão-ouro. Quase todas as calorias vêm de proteína pura. (Ex: Whey, Peito de frango, Tilápia, Claras).</p>
+                        <p style="font-size: 0.82rem; margin-top: 0.2rem;">Padrão-ouro. Quase todas as calorias vêm de
+                            proteína pura. (Ex: Whey, Peito de frango, Tilápia, Claras).</p>
                     </div>
                 </div>
 
-                <div class="guide-tier-item" style="background: rgba(6, 182, 212, 0.1); border-color: rgba(6, 182, 212, 0.3);">
+                <div class="guide-tier-item"
+                    style="background: rgba(6, 182, 212, 0.1); border-color: rgba(6, 182, 212, 0.3);">
                     <div style="font-size: 1.5rem;">🥇</div>
                     <div>
                         <strong style="color: #06b6d4;">Excelente Fonte (35% a 49% de Proteína)</strong>
-                        <p style="font-size: 0.82rem; margin-top: 0.2rem;">Ótima densidade proteica para o dia a dia. (Ex: Iogurte YoPRO, Queijo Cottage, Atum, Patinho).</p>
+                        <p style="font-size: 0.82rem; margin-top: 0.2rem;">Ótima densidade proteica para o dia a dia.
+                            (Ex: Iogurte YoPRO, Queijo Cottage, Atum, Patinho).</p>
                     </div>
                 </div>
 
-                <div class="guide-tier-item" style="background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3);">
+                <div class="guide-tier-item"
+                    style="background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3);">
                     <div style="font-size: 1.5rem;">🥈</div>
                     <div>
                         <strong style="color: #3b82f6;">Boa Fonte (20% a 34% de Proteína)</strong>
-                        <p style="font-size: 0.82rem; margin-top: 0.2rem;">Proteína moderada, acompanha gorduras saudáveis. (Ex: Ovos inteiros, Queijo Minas Light, Tofu).</p>
+                        <p style="font-size: 0.82rem; margin-top: 0.2rem;">Proteína moderada, acompanha gorduras
+                            saudáveis. (Ex: Ovos inteiros, Queijo Minas Light, Tofu).</p>
                     </div>
                 </div>
 
-                <div class="guide-tier-item" style="background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.3);">
+                <div class="guide-tier-item"
+                    style="background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.3);">
                     <div style="font-size: 1.5rem;">⚖️</div>
                     <div>
                         <strong style="color: #f59e0b;">Fonte Complementar (10% a 19% de Proteína)</strong>
-                        <p style="font-size: 0.82rem; margin-top: 0.2rem;">Mais carboidrato/gordura do que proteína. (Ex: Feijão, Lentilha, Leite Integral).</p>
+                        <p style="font-size: 0.82rem; margin-top: 0.2rem;">Mais carboidrato/gordura do que proteína.
+                            (Ex: Feijão, Lentilha, Leite Integral).</p>
                     </div>
                 </div>
 
-                <div class="guide-tier-item" style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3);">
+                <div class="guide-tier-item"
+                    style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3);">
                     <div style="font-size: 1.5rem;">⚠️</div>
                     <div>
                         <strong style="color: #ef4444;">Cuidado / Pegadinha (&lt; 10% de Proteína)</strong>
-                        <p style="font-size: 0.82rem; margin-top: 0.2rem;">Alimentos ultraprocessados com rótulos enganosos. Mais de 90% das calorias vêm de açúcar e gordura.</p>
+                        <p style="font-size: 0.82rem; margin-top: 0.2rem;">Alimentos ultraprocessados com rótulos
+                            enganosos. Mais de 90% das calorias vêm de açúcar e gordura.</p>
                     </div>
                 </div>
             </div>
@@ -623,16 +836,19 @@
         <div class="container">
             <p><strong>NutriProtein Pro</strong> &copy; 2026 • Projetado para decisões inteligentes no supermercado.</p>
             <p class="footer-disclaimer">
-                Desenvolvido com HTML5, CSS3 e JavaScript puro. Pode ser hospedado gratuitamente na Vercel, Netlify ou GitHub Pages. 
-                As informações nutricionais são estimativas educativas baseadas em tabelas nutricionais padrão (TACO/USDA).
+                Desenvolvido com HTML5, CSS3 e JavaScript puro. Pode ser hospedado gratuitamente na Vercel, Netlify ou
+                GitHub Pages.
+                As informações nutricionais são estimativas educativas baseadas em tabelas nutricionais padrão
+                (TACO/USDA).
             </p>
         </div>
     </footer>
 
     <!-- Scripts (Carregamento Universal - Compatível com file:// e Web) -->
-    <script src="./js/calculator.js"></script>
-    <script src="./js/presets.js"></script>
-    <script src="./js/storage.js"></script>
-    <script src="./js/app.js"></script>
+    <script src="./js/calculator.js?v=6"></script>
+    <script src="./js/presets.js?v=6"></script>
+    <script src="./js/storage.js?v=6"></script>
+    <script src="./js/app.js?v=6"></script>
 </body>
+
 </html>

@@ -314,14 +314,16 @@
 .comparison-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    margin-top: 1.5rem;
+    gap: 2rem;
+    margin-top: 1.25rem;
     position: relative;
+    align-items: start;
 }
 
 @media (max-width: 768px) {
     .comparison-grid {
         grid-template-columns: 1fr;
+        gap: 1.25rem;
     }
 }
 
@@ -332,6 +334,7 @@
     padding: 1.5rem;
     position: relative;
     transition: all var(--transition-smooth);
+    box-shadow: var(--card-shadow);
 }
 
 .comparison-card.winner {
@@ -358,22 +361,22 @@
 .comparison-vs-badge {
     position: absolute;
     left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 44px;
-    height: 44px;
+    top: 24px;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 40px;
     background: var(--bg-secondary);
-    border: 2px solid var(--border-color);
+    border: 2px solid var(--brand-primary);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: var(--font-heading);
     font-weight: 900;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--brand-primary);
     z-index: 10;
-    box-shadow: var(--card-shadow);
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.35);
 }
 
 @media (max-width: 768px) {
@@ -625,3 +628,160 @@
     margin-bottom: 0.75rem;
     border: 1px solid var(--border-subtle);
 }
+
+/* --------------------------------------------------------------------------
+   10. Quick Label Guide & Visual Helpers (UX)
+   -------------------------------------------------------------------------- */
+.nutrition-guide-callout {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(6, 182, 212, 0.05));
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.callout-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.callout-badge {
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--brand-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.callout-tip {
+    font-size: 0.75rem;
+    color: var(--brand-secondary);
+    font-weight: 600;
+}
+
+.guide-steps-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+@media (max-width: 500px) {
+    .guide-steps-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.guide-step-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.65rem 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.guide-step-card.highlight {
+    border-color: rgba(16, 185, 129, 0.35);
+}
+
+.step-num {
+    width: 26px;
+    height: 26px;
+    background: var(--brand-primary);
+    color: #061811;
+    font-weight: 900;
+    font-size: 0.82rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.step-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.step-text strong {
+    font-size: 0.82rem;
+    color: var(--text-main);
+}
+
+.step-text span {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+}
+
+.essential-badge {
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: var(--brand-primary);
+    background: rgba(16, 185, 129, 0.15);
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--radius-full);
+}
+
+.optional-badge {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--text-dim);
+}
+
+/* --------------------------------------------------------------------------
+   11. Duel Action Controls
+   -------------------------------------------------------------------------- */
+.duel-top-actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.duel-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.85rem;
+}
+
+.preset-duel-select {
+    height: 38px;
+    font-size: 0.82rem;
+    padding: 0.4rem 0.75rem;
+    margin-bottom: 0.85rem;
+    border-color: var(--border-color);
+    background-color: var(--bg-input);
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+.preset-duel-select:focus {
+    color: var(--text-main);
+    border-color: var(--brand-primary);
+}
+
+.finance-helper-tip {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px dashed var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1rem;
+    margin-top: 0.75rem;
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.finance-helper-tip strong {
+    color: var(--text-main);
+}
+
+

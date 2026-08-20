@@ -71,49 +71,98 @@ const NUTRI_TIERS = {
 };
 
 /**
- * Calcula todas as métricas nutricionais e de custo de um produto
+ * Converte qualquer valor de entrada para número seguro (suporta vírgula decimal, string e null)
+ */
+function parseSafeNumber(val) {
+    if (val === null || val === undefined || val === '') return 0;
+    const num = parseFloat(String(val).replace(',', '.').trim());
+    return (!isNaN(num) && isFinite(num)) ? Math.max(0, num) : 0;
+}
+
+/**
+ * Calcula todas as métricas nutricionais e de custo de um produto de acordo com as regras solicitadas.
+ * 
  * @param {Object} data
- * @param {number} data.calories - Calorias por porção (kcal)
- * @param {number} data.protein - Proteínas por porção (g)
- * @param {number} [data.carbs] - Carboidratos por porção (g)
- * @param {number} [data.fat] - Gorduras totais por porção (g)
- * @param {number} [data.portion] - Tamanho da porção (g ou ml)
- * @param {number} [data.totalWeight] - Peso total da embalagem (g ou ml)
- * @param {number} [data.price] - Preço do produto (R$)
+ * @param {number|string} data.calories - Calorias por porção (kcal)
+ * @param {number|string} data.protein - Proteínas por porção (g)
+ * @param {number|string} [data.carbs] - Carboidratos por porção (g)
+ * @param {number|string} [data.fat] - Gorduras totais por porção (g)
+ * @param {number|string} [data.portion] - Tamanho da porção (g ou ml)
+ * @param {number|string} [data.totalWeight|data.weight] - Peso total da embalagem (g ou ml)
+ * @param {number|string} [data.price] - Preço do produto (R$)
  * @returns {Object} Resultados completos
  */
 function calculateNutritionalMetrics(data) {
-    const calories = Math.max(0, Number(data.calories) || 0);
-    const protein = Math.max(0, Number(data.protein) || 0);
-    const carbs = Math.max(0, Number(data.carbs) || 0);
-    const fat = Math.max(0, Number(data.fat) || 0);
-    const portion = Math.max(0, Number(data.portion) || 0);
-    const totalWeight = Math.max(0, Number(data.totalWeight) || 0);
-    const price = Math.max(0, Number(data.price) || 0);
-
-    if (calories <= 0 || protein <= 0) {
+    if (!data) {
         return {
             isValid: false,
-            message: 'Insira pelo menos as calorias e as proteínas maiores que zero.'
+            message: 'Insira os dados nutricionais para calcular.',
+            proteinPercentage: 0,
+            gramsPer100Kcal: 0,
+            macroSplit: { proteinPct: 0, carbsPct: 0, fatPct: 0 }
         };
     }
 
-    // 1. Calorias por macronutriente
+    const calories = parseSafeNumber(data.calories);
+    const protein = parseSafeNumber(data.protein);
+    const carbs = parseSafeNumber(data.carbs);
+    const fat = parseSafeNumber(data.fat);
+    const portion = parseSafeNumber(data.portion);
+    const totalWeight = parseSafeNumber(data.totalWeight !== undefined ? data.totalWeight : data.weight);
+    const price = parseSafeNumber(data.price);
+
+    // Validação inicial
+    if (calories <= 0 || protein <= 0) {
+        return {
+            isValid: false,
+            message: 'Insira pelo menos as calorias e as proteínas maiores que zero.',
+            proteinPercentage: 0,
+            gramsPer100Kcal: 0,
+            macroSplit: { proteinPct: 0, carbsPct: 0, fatPct: 0 },
+            raw: { calories, protein, carbs, fat, portion, totalWeight, price }
+        };
+    }
+
+    // 1. Percentual de Proteína (% de Proteína):
+    // Fórmula: ((proteinas * 4) / calorias) * 100. Se as calorias forem zero, retorne 0%.
+    const proteinPercentage = calories > 0 ? ((protein * 4) / calories) * 100 : 0;
+
+    // 2. Eficiência Proteica (EFICIÊNCIA):
+    // Fórmula: (proteinas / calorias) * 100, formatando a saída como X.X g / 100 kcal
+    const gramsPer100Kcal = calories > 0 ? (protein / calories) * 100 : 0;
+
+    // 3. Divisão de Macronutrientes (MACROS P / C / G) - BASE CALÓRICA:
+    // % Proteína = (proteína_g × 4) / calorias_totais × 100
+    // % Carboidrato = (carboidrato_g × 4) / calorias_totais × 100
+    // % Gordura = (gordura_g × 9) / calorias_totais × 100
+    // Os três valores representam a distribuição calórica (% das calorias totais)
     const proteinCalories = protein * 4;
     const carbCalories = carbs * 4;
     const fatCalories = fat * 9;
-    const calculatedTotalCalories = proteinCalories + carbCalories + fatCalories;
 
-    // Usamos o maior valor entre o informado na tabela e o somatório dos macros para evitar % > 100% por arredondamentos da ANVISA
-    const effectiveCalories = Math.max(calories, proteinCalories);
+    let proteinPct = 0;
+    let carbsPct = 0;
+    let fatPct = 0;
 
-    // 2. Percentual calórico de proteína
-    const proteinPercentage = Math.min(100, (proteinCalories / effectiveCalories) * 100);
+    if (calories > 0) {
+        proteinPct = Math.round((proteinCalories / calories) * 100);
+        carbsPct = Math.round((carbCalories / calories) * 100);
+        fatPct = Math.round((fatCalories / calories) * 100);
+    }
 
-    // 3. Índice de Eficiência Proteica (g de proteína por 100 kcal)
-    const gramsPer100Kcal = (protein / effectiveCalories) * 100;
+    const macroSplit = {
+        proteinPct,
+        carbsPct,
+        fatPct,
+        proteinCalories: Number(proteinCalories.toFixed(1)),
+        carbCalories: Number(carbCalories.toFixed(1)),
+        fatCalories: Number(fatCalories.toFixed(1)),
+        proteinPctExact: Number(((proteinCalories / (calories || 1)) * 100).toFixed(1)),
+        carbsPctExact: Number(((carbCalories / (calories || 1)) * 100).toFixed(1)),
+        fatPctExact: Number(((fatCalories / (calories || 1)) * 100).toFixed(1))
+    };
 
-    // 4. Determinação da Categoria / Veredito
+    // 4. Determinação do Tier / Veredito Nutricional
     let tier = NUTRI_TIERS.LOW;
     if (proteinPercentage >= NUTRI_TIERS.ELITE.minPercentage || gramsPer100Kcal >= NUTRI_TIERS.ELITE.minGramsPer100Kcal) {
         tier = NUTRI_TIERS.ELITE;
@@ -127,74 +176,59 @@ function calculateNutritionalMetrics(data) {
         tier = NUTRI_TIERS.LOW;
     }
 
-    // 5. Distribuição de Macros (%)
-    let macroSplit = {
-        proteinPct: 0,
-        carbsPct: 0,
-        fatPct: 0
-    };
-
-    if (calculatedTotalCalories > 0) {
-        macroSplit = {
-            proteinPct: Math.round((proteinCalories / calculatedTotalCalories) * 100),
-            carbsPct: Math.round((carbCalories / calculatedTotalCalories) * 100),
-            fatPct: Math.round((fatCalories / calculatedTotalCalories) * 100)
-        };
-    } else {
-        macroSplit = {
-            proteinPct: Math.round(proteinPercentage),
-            carbsPct: 0,
-            fatPct: 0
-        };
-    }
-
-    // 6. Cálculos de Custo-Benefício (se peso e preço foram fornecidos)
+    // 5. Custo por 30g de Proteína (CUSTO POR 30G DE PROTEÍNA):
+    // Fórmula: proteinaTotalEmbalagem = (proteinas / porcao) * pesoLiquido
+    // custoPorGrama = precoTotal / proteinaTotalEmbalagem
+    // custoPor30g = custoPorGrama * 30
     let costAnalysis = null;
-    if (price > 0 && totalWeight > 0 && portion > 0) {
-        const servingsPerPackage = totalWeight / portion;
-        const totalProteinInPackage = servingsPerPackage * protein;
-        const costPerGramProtein = price / totalProteinInPackage;
-        const costPer10gProtein = costPerGramProtein * 10;
-        const costPer30gProtein = costPerGramProtein * 30; // 30g é uma dose padrão de referência
-        const pricePer100g = (price / totalWeight) * 100;
+    if (price > 0 && totalWeight > 0 && portion > 0 && protein > 0) {
+        const totalProteinInPackage = (protein / portion) * totalWeight;
+        
+        if (totalProteinInPackage > 0) {
+            const costPerGramProtein = price / totalProteinInPackage;
+            const costPer30gProtein = costPerGramProtein * 30;
+            const costPer10gProtein = costPerGramProtein * 10;
+            const pricePer100g = (price / totalWeight) * 100;
+            const servingsPerPackage = totalWeight / portion;
 
-        let costVerdict = 'Preço Justo';
-        let costBadgeColor = '#3b82f6';
+            let costVerdict = 'Preço Justo';
+            let costBadgeColor = '#3b82f6';
 
-        if (costPer30gProtein <= 4.0) {
-            costVerdict = '🔥 Super Econômico';
-            costBadgeColor = '#10b981';
-        } else if (costPer30gProtein <= 8.5) {
-            costVerdict = '👍 Bom Custo-Benefício';
-            costBadgeColor = '#06b6d4';
-        } else if (costPer30gProtein <= 15.0) {
-            costVerdict = '⏱️ Preço de Conveniência';
-            costBadgeColor = '#f59e0b';
-        } else {
-            costVerdict = '💸 Proteína de Alto Custo';
-            costBadgeColor = '#ef4444';
+            if (costPer30gProtein <= 4.0) {
+                costVerdict = '🔥 Super Econômico';
+                costBadgeColor = '#10b981';
+            } else if (costPer30gProtein <= 8.5) {
+                costVerdict = '👍 Bom Custo-Benefício';
+                costBadgeColor = '#06b6d4';
+            } else if (costPer30gProtein <= 15.0) {
+                costVerdict = '⏱️ Preço de Conveniência';
+                costBadgeColor = '#f59e0b';
+            } else {
+                costVerdict = '💸 Proteína de Alto Custo';
+                costBadgeColor = '#ef4444';
+            }
+
+            costAnalysis = {
+                hasData: true,
+                servingsPerPackage: Number(servingsPerPackage.toFixed(1)),
+                totalProteinInPackage: Number(totalProteinInPackage.toFixed(1)),
+                costPerGramProtein: Number(costPerGramProtein.toFixed(4)),
+                costPer10gProtein: Number(costPer10gProtein.toFixed(2)),
+                costPer30gProtein: Number(costPer30gProtein.toFixed(2)),
+                pricePer100g: Number(pricePer100g.toFixed(2)),
+                costVerdict,
+                costBadgeColor
+            };
         }
-
-        costAnalysis = {
-            hasData: true,
-            servingsPerPackage: Number(servingsPerPackage.toFixed(1)),
-            totalProteinInPackage: Number(totalProteinInPackage.toFixed(1)),
-            costPerGramProtein: Number(costPerGramProtein.toFixed(4)),
-            costPer10gProtein: Number(costPer10gProtein.toFixed(2)),
-            costPer30gProtein: Number(costPer30gProtein.toFixed(2)),
-            pricePer100g: Number(pricePer100g.toFixed(2)),
-            costVerdict,
-            costBadgeColor
-        };
     }
 
     return {
         isValid: true,
         proteinPercentage: Number(proteinPercentage.toFixed(1)),
         gramsPer100Kcal: Number(gramsPer100Kcal.toFixed(1)),
-        proteinCalories: Number(proteinCalories.toFixed(1)),
-        carbCalories: Number(carbCalories.toFixed(1)),
-        fatCalories: Number(fatCalories.toFixed(1)),
+        proteinCalories: Number((protein * 4).toFixed(1)),
+        carbCalories: Number((carbs * 4).toFixed(1)),
+        fatCalories: Number((fat * 9).toFixed(1)),
         macroSplit,
         tier,
         costAnalysis,
@@ -212,5 +246,6 @@ function calculateNutritionalMetrics(data) {
 
 // Exportações Globais (compatíveis com script padrão e file://)
 window.NUTRI_TIERS = NUTRI_TIERS;
+window.parseSafeNumber = parseSafeNumber;
 window.calculateNutritionalMetrics = calculateNutritionalMetrics;
-window.NutriCalc = { NUTRI_TIERS, calculateNutritionalMetrics };
+window.NutriCalc = { NUTRI_TIERS, parseSafeNumber, calculateNutritionalMetrics };

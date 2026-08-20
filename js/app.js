@@ -147,9 +147,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     const calcInputs = [caloriesInput, proteinInput, carbsInput, fatInput, portionInput, totalWeightInput, priceInput, productNameInput];
     calcInputs.forEach(input => {
-        input.addEventListener('input', () => {
-            runQuickCalculation();
-        });
+        if (input) {
+            input.addEventListener('input', runQuickCalculation);
+            input.addEventListener('change', runQuickCalculation);
+            input.addEventListener('keyup', runQuickCalculation);
+        }
     });
 
     // Collapsible toggle for cost inputs
@@ -162,13 +164,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function runQuickCalculation() {
         const data = {
-            calories: caloriesInput.value,
-            protein: proteinInput.value,
-            carbs: carbsInput.value,
-            fat: fatInput.value,
-            portion: portionInput.value,
-            totalWeight: totalWeightInput.value,
-            price: priceInput.value
+            calories: caloriesInput ? caloriesInput.value : 0,
+            protein: proteinInput ? proteinInput.value : 0,
+            carbs: carbsInput ? carbsInput.value : 0,
+            fat: fatInput ? fatInput.value : 0,
+            portion: portionInput ? portionInput.value : 0,
+            totalWeight: totalWeightInput ? totalWeightInput.value : 0,
+            price: priceInput ? priceInput.value : 0
         };
 
         const result = calculateNutritionalMetrics(data);
@@ -180,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         currentAnalysis = {
-            name: productNameInput.value.trim() || 'Produto Analisado',
+            name: (productNameInput && productNameInput.value.trim()) || 'Produto Analisado',
             ...result
         };
 
@@ -189,8 +191,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateResultsView(result) {
         // 1. Radial Progress
-        const pct = result.proteinPercentage;
-        radialPercentageText.textContent = pct.toFixed(0);
+        const pct = result.proteinPercentage || 0;
+        radialPercentageText.textContent = (pct % 1 === 0 ? pct.toFixed(0) : pct.toFixed(1));
         
         // Circumference is ~440 (2 * pi * 70)
         const maxOffset = 440;
@@ -211,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
         verdictExamples.textContent = result.tier.examples;
 
         // 3. Stats
-        statGramsPer100Kcal.textContent = result.gramsPer100Kcal;
+        statGramsPer100Kcal.textContent = (result.gramsPer100Kcal || 0).toFixed(1);
         statProtKcal.textContent = `${result.proteinCalories} kcal`;
 
         // 4. Macro Distribution
@@ -467,34 +469,124 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // 6. Comparison Arena (A vs B Duel)
     // ==========================================
+    const duelPresetA = document.getElementById('duel-preset-a');
+    const duelPresetB = document.getElementById('duel-preset-b');
+
+    function populateDuelPresetSelectors() {
+        if (!duelPresetA || !duelPresetB) return;
+        const presets = window.FOOD_PRESETS || [];
+        
+        let optionsHTML = '';
+        presets.forEach(p => {
+            optionsHTML += `<option value="${p.id}">${p.name} (${p.protein}g prot / ${p.calories}kcal)</option>`;
+        });
+
+        duelPresetA.innerHTML = '<option value="">⚡ Carregar Alimento no Produto A...</option>' + optionsHTML;
+        duelPresetB.innerHTML = '<option value="">⚡ Carregar Alimento no Produto B...</option>' + optionsHTML;
+    }
+
+    if (duelPresetA) {
+        duelPresetA.addEventListener('change', () => {
+            const selectedId = duelPresetA.value;
+            if (!selectedId) return;
+            const presets = window.FOOD_PRESETS || [];
+            const item = presets.find(p => p.id === selectedId);
+            if (item) {
+                compAInputs.name.value = item.name;
+                compAInputs.calories.value = item.calories;
+                compAInputs.protein.value = item.protein;
+                compAInputs.carbs.value = item.carbs || '';
+                compAInputs.fat.value = item.fat || '';
+                compAInputs.portion.value = item.portion || '';
+                compAInputs.weight.value = item.totalWeight || '';
+                compAInputs.price.value = item.price || '';
+                runComparisonDuel();
+                showToast(`Produto A: ${item.name}`);
+            }
+        });
+    }
+
+    if (duelPresetB) {
+        duelPresetB.addEventListener('change', () => {
+            const selectedId = duelPresetB.value;
+            if (!selectedId) return;
+            const presets = window.FOOD_PRESETS || [];
+            const item = presets.find(p => p.id === selectedId);
+            if (item) {
+                compBInputs.name.value = item.name;
+                compBInputs.calories.value = item.calories;
+                compBInputs.protein.value = item.protein;
+                compBInputs.carbs.value = item.carbs || '';
+                compBInputs.fat.value = item.fat || '';
+                compBInputs.portion.value = item.portion || '';
+                compBInputs.weight.value = item.totalWeight || '';
+                compBInputs.price.value = item.price || '';
+                runComparisonDuel();
+                showToast(`Produto B: ${item.name}`);
+            }
+        });
+    }
+
+    function handleClearDuelA(e) {
+        if (e && e.preventDefault) e.preventDefault();
+        Object.values(compAInputs).forEach(inp => { if (inp) inp.value = ''; });
+        if (duelPresetA) duelPresetA.value = '';
+        runComparisonDuel();
+        showToast('Produto A limpo!');
+    }
+
+    function handleClearDuelB(e) {
+        if (e && e.preventDefault) e.preventDefault();
+        Object.values(compBInputs).forEach(inp => { if (inp) inp.value = ''; });
+        if (duelPresetB) duelPresetB.value = '';
+        runComparisonDuel();
+        showToast('Produto B limpo!');
+    }
+
+    function handleClearDuelBoth(e) {
+        if (e && e.preventDefault) e.preventDefault();
+        Object.values(compAInputs).forEach(inp => { if (inp) inp.value = ''; });
+        Object.values(compBInputs).forEach(inp => { if (inp) inp.value = ''; });
+        if (duelPresetA) duelPresetA.value = '';
+        if (duelPresetB) duelPresetB.value = '';
+        runComparisonDuel();
+        showToast('Duelo reiniciado! Campos limpos.');
+    }
+
+    window.clearDuelA = handleClearDuelA;
+    window.clearDuelB = handleClearDuelB;
+    window.clearDuelBoth = handleClearDuelBoth;
+
     const allCompInputs = [...Object.values(compAInputs), ...Object.values(compBInputs)];
     allCompInputs.forEach(input => {
         if (input) {
-            input.addEventListener('input', () => {
-                runComparisonDuel();
-            });
+            input.addEventListener('input', runComparisonDuel);
+            input.addEventListener('change', runComparisonDuel);
+            input.addEventListener('keyup', runComparisonDuel);
         }
     });
 
     function runComparisonDuel() {
         const dataA = {
-            calories: compAInputs.calories.value,
-            protein: compAInputs.protein.value,
-            carbs: compAInputs.carbs.value,
-            fat: compAInputs.fat.value,
-            portion: compAInputs.portion.value,
-            totalWeight: compAInputs.weight.value,
-            price: compAInputs.price.value
+            name: compAInputs.name ? compAInputs.name.value : '',
+            calories: compAInputs.calories ? compAInputs.calories.value : 0,
+            protein: compAInputs.protein ? compAInputs.protein.value : 0,
+            carbs: compAInputs.carbs ? compAInputs.carbs.value : 0,
+            fat: compAInputs.fat ? compAInputs.fat.value : 0,
+            portion: compAInputs.portion ? compAInputs.portion.value : 0,
+            totalWeight: compAInputs.weight ? compAInputs.weight.value : 0,
+            price: compAInputs.price ? compAInputs.price.value : 0
         };
 
         const dataB = {
-            calories: compBInputs.calories.value,
-            protein: compBInputs.protein.value,
-            carbs: compBInputs.carbs.value,
-            fat: compBInputs.fat.value,
-            portion: compBInputs.portion.value,
-            totalWeight: compBInputs.weight.value,
-            price: compBInputs.price.value
+            name: compBInputs.name ? compBInputs.name.value : '',
+            calories: compBInputs.calories ? compBInputs.calories.value : 0,
+            protein: compBInputs.protein ? compBInputs.protein.value : 0,
+            carbs: compBInputs.carbs ? compBInputs.carbs.value : 0,
+            fat: compBInputs.fat ? compBInputs.fat.value : 0,
+            portion: compBInputs.portion ? compBInputs.portion.value : 0,
+            totalWeight: compBInputs.weight ? compBInputs.weight.value : 0,
+            price: compBInputs.price ? compBInputs.price.value : 0
         };
 
         const resA = calculateNutritionalMetrics(dataA);
@@ -537,27 +629,29 @@ document.addEventListener('DOMContentLoaded', () => {
             resultBanner.style.display = 'block';
 
             let winnerText = '';
-            const diffPct = Math.abs(resA.proteinPercentage - resB.proteinPercentage).toFixed(1);
+            const pctA = resA.proteinPercentage || 0;
+            const pctB = resB.proteinPercentage || 0;
+            const diffPct = Math.abs(pctA - pctB).toFixed(1);
 
-            if (resA.proteinPercentage > resB.proteinPercentage) {
+            if (pctA > pctB) {
                 cardA.classList.add('winner');
                 addWinnerRibbon(cardA, 'Vencedor em Proteína');
-                winnerText = `🏆 <strong>${compAInputs.name.value.trim() || 'Produto A'}</strong> é o grande vencedor com <strong>${resA.proteinPercentage}%</strong> de calorias em proteínas (+${diffPct}% mais eficiente que o Produto B).`;
-            } else if (resB.proteinPercentage > resA.proteinPercentage) {
+                winnerText = `🏆 <strong>${compAInputs.name.value.trim() || 'Produto A'}</strong> é o grande vencedor com <strong>${pctA.toFixed(1)}%</strong> de calorias em proteínas (+${diffPct}% mais eficiente que o Produto B).`;
+            } else if (pctB > pctA) {
                 cardB.classList.add('winner');
                 addWinnerRibbon(cardB, 'Vencedor em Proteína');
-                winnerText = `🏆 <strong>${compBInputs.name.value.trim() || 'Produto B'}</strong> é o grande vencedor com <strong>${resB.proteinPercentage}%</strong> de calorias em proteínas (+${diffPct}% mais eficiente que o Produto A).`;
+                winnerText = `🏆 <strong>${compBInputs.name.value.trim() || 'Produto B'}</strong> é o grande vencedor com <strong>${pctB.toFixed(1)}%</strong> de calorias em proteínas (+${diffPct}% mais eficiente que o Produto A).`;
             } else {
-                winnerText = `⚖️ <strong>Empate Técnico!</strong> Ambos os produtos possuem exatamente a mesma densidade proteica (${resA.proteinPercentage}%).`;
+                winnerText = `⚖️ <strong>Empate Técnico!</strong> Ambos os produtos possuem exatamente a mesma densidade proteica (${pctA.toFixed(1)}%).`;
             }
 
-            // Análise de Custo se houver
-            if (resA.costAnalysis && resB.costAnalysis) {
+            // Análise de Custo se houver em ambos
+            if (resA.costAnalysis && resA.costAnalysis.hasData && resB.costAnalysis && resB.costAnalysis.hasData) {
                 const costDiff = Math.abs(resA.costAnalysis.costPer30gProtein - resB.costAnalysis.costPer30gProtein).toFixed(2);
                 if (resA.costAnalysis.costPer30gProtein < resB.costAnalysis.costPer30gProtein) {
-                    winnerText += `<br>💰 <strong>Melhor Custo:</strong> ${compAInputs.name.value.trim() || 'Produto A'} sai por R$ ${resA.costAnalysis.costPer30gProtein}/30g prot (Economia de R$ ${costDiff} por dose).`;
+                    winnerText += `<br>💰 <strong>Melhor Custo:</strong> ${compAInputs.name.value.trim() || 'Produto A'} sai por R$ ${resA.costAnalysis.costPer30gProtein.toFixed(2)}/30g prot (Economia de R$ ${costDiff} por dose).`;
                 } else if (resB.costAnalysis.costPer30gProtein < resA.costAnalysis.costPer30gProtein) {
-                    winnerText += `<br>💰 <strong>Melhor Custo:</strong> ${compBInputs.name.value.trim() || 'Produto B'} sai por R$ ${resB.costAnalysis.costPer30gProtein}/30g prot (Economia de R$ ${costDiff} por dose).`;
+                    winnerText += `<br>💰 <strong>Melhor Custo:</strong> ${compBInputs.name.value.trim() || 'Produto B'} sai por R$ ${resB.costAnalysis.costPer30gProtein.toFixed(2)}/30g prot (Economia de R$ ${costDiff} por dose).`;
                 }
             }
 
@@ -575,28 +669,37 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function generateCompStatsHTML(res) {
+        const proteinPercentage = res.proteinPercentage !== undefined ? res.proteinPercentage.toFixed(1) : '0.0';
+        const gramsPer100Kcal = res.gramsPer100Kcal !== undefined ? res.gramsPer100Kcal.toFixed(1) : '0.0';
+        const pPct = res.macroSplit ? res.macroSplit.proteinPct : 0;
+        const cPct = res.macroSplit ? res.macroSplit.carbsPct : 0;
+        const fPct = res.macroSplit ? res.macroSplit.fatPct : 0;
+
         return `
             <div style="margin: 1rem 0; text-align: center;">
                 <span class="verdict-badge-pill" style="background: ${res.tier.bg}; color: ${res.tier.color}; border: 1px solid ${res.tier.border}">
                     ${res.tier.icon} ${res.tier.name}
                 </span>
                 <div style="font-size: 2.2rem; font-family: var(--font-heading); font-weight: 900; color: ${res.tier.color};">
-                    ${res.proteinPercentage}% <span style="font-size: 1rem; color: var(--text-dim);">de Proteína</span>
+                    ${proteinPercentage}% <span style="font-size: 1rem; color: var(--text-dim);">de Proteína</span>
                 </div>
             </div>
             <div class="stats-row">
                 <div class="stat-box">
                     <div class="stat-box-label">Eficiência</div>
-                    <div class="stat-box-value">${res.gramsPer100Kcal} <span class="stat-box-unit">g / 100 kcal</span></div>
+                    <div class="stat-box-value">${gramsPer100Kcal} <span class="stat-box-unit">g / 100 kcal</span></div>
                 </div>
-                <div class="stat-box">
-                    <div class="stat-box-label">Macros (P / C / G)</div>
+                <div class="stat-box" title="Distribuição calórica: percentual das calorias totais (% das kcal) fornecidas por cada macronutriente">
+                    <div class="stat-box-label" style="display: flex; align-items: center; justify-content: center; gap: 0.25rem;">
+                        <span>Macros (P / C / G)</span>
+                        <span style="font-size: 0.75rem; color: var(--brand-primary); cursor: help;" title="Distribuição calórica: % das calorias totais vindas de cada macro">ℹ️</span>
+                    </div>
                     <div class="stat-box-value" style="font-size: 1rem;">
-                        ${res.macroSplit.proteinPct}% / ${res.macroSplit.carbsPct}% / ${res.macroSplit.fatPct}%
+                        ${pPct}% / ${cPct}% / ${fPct}%
                     </div>
                 </div>
             </div>
-            ${res.costAnalysis ? `
+            ${res.costAnalysis && res.costAnalysis.hasData ? `
                 <div class="stat-box" style="margin-top: 0.5rem; border-color: ${res.costAnalysis.costBadgeColor};">
                     <div class="stat-box-label">Custo por 30g de Proteína</div>
                     <div class="stat-box-value" style="color: ${res.costAnalysis.costBadgeColor};">
@@ -822,6 +925,12 @@ document.addEventListener('DOMContentLoaded', () => {
             handleClearHistory(e);
         } else if (e.target.closest('#clear-form-btn')) {
             handleClearForm(e);
+        } else if (e.target.closest('#clear-comp-a-btn')) {
+            handleClearDuelA(e);
+        } else if (e.target.closest('#clear-comp-b-btn')) {
+            handleClearDuelB(e);
+        } else if (e.target.closest('#clear-comp-both-btn')) {
+            handleClearDuelBoth(e);
         }
     });
 
@@ -919,6 +1028,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial setups
     renderQuickPresets();
     renderPresetsFilter();
+    populateDuelPresetSelectors();
     updateCartBadge();
     resetResultsView();
 
@@ -926,6 +1036,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadPresets().then(() => {
         renderQuickPresets();
         renderPresetsFilter();
+        populateDuelPresetSelectors();
         if (document.getElementById('tab-presets')?.classList.contains('active')) {
             renderPresetsGrid();
         }
