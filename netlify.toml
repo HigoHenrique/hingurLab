@@ -1,0 +1,17 @@
+# Configuração de Deploy para o Netlify (HingurLab)
+
+[build]
+  publish = "."
+  # Injeta automaticamente as variáveis de ambiente configuradas no Dashboard do Netlify em js/env.js
+  command = "node -e \"const fs=require('fs'); const gist=process.env.GIST_FOOD_DATABASE_URL||''; const ativar=process.env.ATIVAR_DADOS||'true'; const content = 'window.ENV = window.ENV || {\\n    ATIVAR_DADOS: ' + (ativar==='true'||ativar==='1'||ativar===true) + ',\\n    GIST_FOOD_DATABASE_URL: \\'' + gist + '\\'\\n};\\n'; fs.writeFileSync('./js/env.js', content); console.log('[Netlify Build] js/env.js gerado com sucesso!');\""
+
+# Garante que o Service Worker e as configurações de ambiente nunca fiquem presos em cache antigo
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+[[headers]]
+  for = "/js/env.js"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"

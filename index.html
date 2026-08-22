@@ -380,6 +380,9 @@
                             Dica: Compare produtos na mesma prateleira para escolher o mais eficiente!
                         </div>
 
+                        <!-- Smart Contextual Badges & Rule 10:1 Indicator -->
+                        <div class="smart-badges-container" id="smart-badges-container"></div>
+
                         <!-- Key Stats Boxes -->
                         <div class="stats-row">
                             <div class="stat-box">
@@ -412,19 +415,24 @@
                                 <div class="macro-bar-segment protein" id="macro-bar-protein" style="width: 0%;"></div>
                                 <div class="macro-bar-segment carbs" id="macro-bar-carbs" style="width: 0%;"></div>
                                 <div class="macro-bar-segment fat" id="macro-bar-fat" style="width: 0%;"></div>
+                                <div class="macro-bar-segment other" id="macro-bar-other" style="width: 0%; display: none;"></div>
                             </div>
                             <div class="macro-legend">
                                 <div class="macro-legend-item">
                                     <span class="legend-dot protein"></span>
                                     <span>Prot: <strong id="macro-pct-protein">0%</strong></span>
                                 </div>
-                                <div class="macro-legend-item">
+                                <div class="macro-legend-item" id="macro-legend-carbs">
                                     <span class="legend-dot carbs"></span>
                                     <span>Carb: <strong id="macro-pct-carbs">0%</strong></span>
                                 </div>
-                                <div class="macro-legend-item">
+                                <div class="macro-legend-item" id="macro-legend-fat">
                                     <span class="legend-dot fat"></span>
                                     <span>Gord: <strong id="macro-pct-fat">0%</strong></span>
+                                </div>
+                                <div class="macro-legend-item" id="macro-legend-other" style="display: none;">
+                                    <span class="legend-dot other"></span>
+                                    <span>Outros: <strong id="macro-pct-other">0%</strong></span>
                                 </div>
                             </div>
                         </div>
@@ -797,21 +805,23 @@
             </div>
 
             <div style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.6;">
-                <p style="margin-bottom: 1rem;">
+                <p style="margin-bottom: 0.85rem;">
                     A maioria dos produtos no supermercado se rotula como <strong>"Rico em Proteína"</strong> ou
                     <strong>"Fit"</strong>, mas na verdade esconde dezenas de gramas de gordura e açúcar.
                 </p>
 
-                <h4 style="color: var(--text-main); font-size: 1rem; margin: 1.25rem 0 0.5rem;">💡 A Regra dos 4 kcal
-                    por grama:</h4>
-                <p style="margin-bottom: 1rem;">
-                    Cada 1 grama de proteína pura fornece exatamente <strong>4 kcal</strong>. Se uma barra tem 10g de
-                    proteína (40 kcal) mas o total da barra é 200 kcal, significa que <strong>apenas 20%</strong> das
-                    calorias são proteína!
+                <h4 style="color: var(--text-main); font-size: 1rem; margin: 1.1rem 0 0.4rem;">🎯 A Regra do 10:1 (Regra do Zero):</h4>
+                <p style="margin-bottom: 0.85rem;">
+                    Muito usada no meio fitness para avaliar a densidade proteica real: <strong>multiplique a proteína (g) por 10 (adicione um zero)</strong>.
+                    Se o resultado for maior ou igual às calorias totais, o alimento tem pelo menos <strong>1g de proteína a cada 10 kcal</strong> (ou seja, &ge; 40% das calorias vêm de proteína).
                 </p>
 
-                <h4 style="color: var(--text-main); font-size: 1rem; margin: 1.25rem 0 0.5rem;">🏆 Classificação
-                    HingurLab:</h4>
+                <h4 style="color: var(--text-main); font-size: 1rem; margin: 1.1rem 0 0.4rem;">⚖️ Por que Calorias e Outros Macros Importam?</h4>
+                <p style="margin-bottom: 0.85rem;">
+                    Um alimento pode ter muita proteína mas vir acompanhado de uma carga calórica massiva de gorduras ou carboidratos (ex: 2000 kcal com 200g de proteína = 40% proteína, mas <strong>1200 kcal de outros nutrientes</strong>). O HingurLab analisa a porção completa para que você tome a melhor decisão para o seu objetivo.
+                </p>
+
+                <h4 style="color: var(--text-main); font-size: 1rem; margin: 1.1rem 0 0.4rem;">🏆 Classificação HingurLab:</h4>
 
                 <div class="guide-tier-item"
                     style="background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3);">
@@ -819,7 +829,7 @@
                     <div>
                         <strong style="color: #10b981;">Nível Elite (&ge; 50% de Proteína)</strong>
                         <p style="font-size: 0.82rem; margin-top: 0.2rem;">Padrão-ouro. Quase todas as calorias vêm de
-                            proteína pura. (Ex: Whey, Peito de frango, Tilápia, Claras).</p>
+                            proteína pura (&ge; 12.5g / 100 kcal). Ex: Whey Isolado, Peito de frango, Tilápia, Claras.</p>
                     </div>
                 </div>
 
@@ -827,9 +837,9 @@
                     style="background: rgba(6, 182, 212, 0.1); border-color: rgba(6, 182, 212, 0.3);">
                     <div style="font-size: 1.5rem;">🥇</div>
                     <div>
-                        <strong style="color: #06b6d4;">Excelente Fonte (35% a 49% de Proteína)</strong>
-                        <p style="font-size: 0.82rem; margin-top: 0.2rem;">Ótima densidade proteica para o dia a dia.
-                            (Ex: Iogurte YoPRO, Queijo Cottage, Atum, Patinho).</p>
+                        <strong style="color: #06b6d4;">Excelente Densidade — Regra 10:1 (40% a 49.9%)</strong>
+                        <p style="font-size: 0.82rem; margin-top: 0.2rem;">Aprovado na Regra do 10:1 (&ge; 10g / 100 kcal).
+                            Excelente densidade para o dia a dia. Ex: Iogurtes YoPRO, Cottage, Atum, Patinho magro.</p>
                     </div>
                 </div>
 
@@ -837,9 +847,9 @@
                     style="background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3);">
                     <div style="font-size: 1.5rem;">🥈</div>
                     <div>
-                        <strong style="color: #3b82f6;">Boa Fonte (20% a 34% de Proteína)</strong>
-                        <p style="font-size: 0.82rem; margin-top: 0.2rem;">Proteína moderada, acompanha gorduras
-                            saudáveis. (Ex: Ovos inteiros, Queijo Minas Light, Tofu).</p>
+                        <strong style="color: #3b82f6;">Boa Fonte (25% a 39.9% de Proteína)</strong>
+                        <p style="font-size: 0.82rem; margin-top: 0.2rem;">Proteína sólida, acompanhada de gorduras ou
+                            carboidratos moderados. Ex: Ovos inteiros, Queijo Minas Light, Tofu.</p>
                     </div>
                 </div>
 
@@ -847,9 +857,9 @@
                     style="background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.3);">
                     <div style="font-size: 1.5rem;">⚖️</div>
                     <div>
-                        <strong style="color: #f59e0b;">Fonte Complementar (10% a 19% de Proteína)</strong>
-                        <p style="font-size: 0.82rem; margin-top: 0.2rem;">Mais carboidrato/gordura do que proteína.
-                            (Ex: Feijão, Lentilha, Leite Integral).</p>
+                        <strong style="color: #f59e0b;">Fonte Complementar (12% a 24.9% de Proteína)</strong>
+                        <p style="font-size: 0.82rem; margin-top: 0.2rem;">Mais de 75% das calorias vêm de carbo ou gordura.
+                            Ex: Feijão, Lentilha, Aveia, Leite Integral.</p>
                     </div>
                 </div>
 
@@ -857,9 +867,9 @@
                     style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3);">
                     <div style="font-size: 1.5rem;">⚠️</div>
                     <div>
-                        <strong style="color: #ef4444;">Cuidado / Pegadinha (&lt; 10% de Proteína)</strong>
+                        <strong style="color: #ef4444;">Cuidado / Pegadinha (&lt; 12% de Proteína)</strong>
                         <p style="font-size: 0.82rem; margin-top: 0.2rem;">Alimentos ultraprocessados com rótulos
-                            enganosos. Mais de 90% das calorias vêm de açúcar e gordura.</p>
+                            enganosos. Mais de 88% das calorias vêm de açúcar e gordura.</p>
                     </div>
                 </div>
             </div>
@@ -882,10 +892,10 @@
 
     <!-- Scripts (Carregamento Universal - Compatível com file:// e Web) -->
     <script src="./js/env.js"></script>
-    <script src="./js/calculator.js?v=16"></script>
-    <script src="./js/presets.js?v=16"></script>
-    <script src="./js/storage.js?v=16"></script>
-    <script src="./js/app.js?v=16"></script>
+    <script src="./js/calculator.js?v=18"></script>
+    <script src="./js/presets.js?v=18"></script>
+    <script src="./js/storage.js?v=18"></script>
+    <script src="./js/app.js?v=18"></script>
 </body>
 
 </html>

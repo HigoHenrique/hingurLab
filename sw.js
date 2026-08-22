@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hingurlab-v16';
+const CACHE_NAME = 'hingurlab-v18';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',

@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const verdictTitle = document.getElementById('verdict-title');
     const verdictDesc = document.getElementById('verdict-desc');
     const verdictExamples = document.getElementById('verdict-examples');
+    const smartBadgesContainer = document.getElementById('smart-badges-container');
     
     const statGramsPer100Kcal = document.getElementById('stat-grams-100kcal');
     const statProtKcal = document.getElementById('stat-prot-kcal');
@@ -41,9 +42,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const macroBarProtein = document.getElementById('macro-bar-protein');
     const macroBarCarbs = document.getElementById('macro-bar-carbs');
     const macroBarFat = document.getElementById('macro-bar-fat');
+    const macroBarOther = document.getElementById('macro-bar-other');
+    const macroLegendOther = document.getElementById('macro-legend-other');
     const macroPctProtein = document.getElementById('macro-pct-protein');
     const macroPctCarbs = document.getElementById('macro-pct-carbs');
     const macroPctFat = document.getElementById('macro-pct-fat');
+    const macroPctOther = document.getElementById('macro-pct-other');
 
     const costCard = document.getElementById('cost-card');
     const costBadge = document.getElementById('cost-badge');
@@ -258,15 +262,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
         verdictTitle.textContent = result.tier.name;
         verdictTitle.style.color = result.tier.color;
-        verdictDesc.textContent = result.tier.description;
+        verdictDesc.textContent = (result.contextualVerdict && result.contextualVerdict.description) || result.tier.description;
         verdictExamples.textContent = result.tier.examples;
+
+        // 2.1 Smart Badges (Regra 10:1, Carga Calórica, Lipídios, Carbos, Pureza)
+        if (smartBadgesContainer) {
+            smartBadgesContainer.innerHTML = '';
+            if (result.contextualVerdict && Array.isArray(result.contextualVerdict.smartBadges)) {
+                result.contextualVerdict.smartBadges.forEach(badge => {
+                    const tag = document.createElement('span');
+                    tag.className = `smart-badge-tag ${badge.type || 'info'}`;
+                    if (badge.tooltip) tag.title = badge.tooltip;
+                    tag.innerHTML = `<span>${badge.icon || ''}</span> <strong>${badge.label}:</strong> <span>${badge.text}</span>`;
+                    smartBadgesContainer.appendChild(tag);
+                });
+            }
+        }
 
         // 3. Stats
         statGramsPer100Kcal.textContent = (result.gramsPer100Kcal || 0).toFixed(1);
         statProtKcal.textContent = `${result.proteinCalories} kcal`;
 
-        // 4. Macro Distribution
-        const { proteinPct, carbsPct, fatPct } = result.macroSplit;
+        // 4. Macro Distribution (Normalizada e Baseada em Atwater)
+        const { proteinPct, carbsPct, fatPct, otherPct } = result.macroSplit;
         macroBarProtein.style.width = `${proteinPct}%`;
         macroBarCarbs.style.width = `${carbsPct}%`;
         macroBarFat.style.width = `${fatPct}%`;
@@ -274,6 +292,27 @@ document.addEventListener('DOMContentLoaded', () => {
         macroPctProtein.textContent = `${proteinPct}%`;
         macroPctCarbs.textContent = `${carbsPct}%`;
         macroPctFat.textContent = `${fatPct}%`;
+
+        if (otherPct && otherPct > 0) {
+            if (macroBarOther) {
+                macroBarOther.style.display = 'block';
+                macroBarOther.style.width = `${otherPct}%`;
+            }
+            if (macroLegendOther) {
+                macroLegendOther.style.display = 'flex';
+            }
+            if (macroPctOther) {
+                macroPctOther.textContent = `${otherPct}%`;
+            }
+        } else {
+            if (macroBarOther) {
+                macroBarOther.style.display = 'none';
+                macroBarOther.style.width = '0%';
+            }
+            if (macroLegendOther) {
+                macroLegendOther.style.display = 'none';
+            }
+        }
 
         // 5. Cost-Benefit
         if (result.costAnalysis && result.costAnalysis.hasData) {
@@ -304,12 +343,23 @@ document.addEventListener('DOMContentLoaded', () => {
         verdictDesc.textContent = 'Digite pelo menos as calorias e as proteínas da porção para ver o veredito instantâneo.';
         verdictExamples.textContent = 'Dica: Olhe a tabela nutricional atrás da embalagem.';
 
+        if (smartBadgesContainer) {
+            smartBadgesContainer.innerHTML = '';
+        }
+
         statGramsPer100Kcal.textContent = '0.0';
         statProtKcal.textContent = '0 kcal';
 
         macroBarProtein.style.width = '0%';
         macroBarCarbs.style.width = '0%';
         macroBarFat.style.width = '0%';
+        if (macroBarOther) {
+            macroBarOther.style.width = '0%';
+            macroBarOther.style.display = 'none';
+        }
+        if (macroLegendOther) {
+            macroLegendOther.style.display = 'none';
+        }
         macroPctProtein.textContent = '0%';
         macroPctCarbs.textContent = '0%';
         macroPctFat.textContent = '0%';
@@ -500,8 +550,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div>
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                        <span class="verdict-badge-pill" style="margin: 0; padding: 0.25rem 0.65rem; font-size: 0.75rem; background: ${metric.tier.bg}; color: ${metric.tier.color}; border: 1px solid ${metric.tier.border};">
-                            ${metric.tier.icon} ${metric.proteinPercentage}% Prot
+                        <span class="verdict-badge-pill" style="margin: 0; padding: 0.25rem 0.65rem; font-size: 0.75rem; background: ${(metric.tier && metric.tier.bg) || 'rgba(255,255,255,0.05)'}; color: ${(metric.tier && metric.tier.color) || 'var(--text-main)'}; border: 1px solid ${(metric.tier && metric.tier.border) || 'var(--border-color)'};">
+                            ${(metric.tier && metric.tier.icon) || '🔍'} ${metric.proteinPercentage || 0}% Prot
                         </span>
                         ${item.price ? `<span style="font-weight: 700; font-size: 0.9rem;">R$ ${item.price.toFixed(2)}</span>` : ''}
                     </div>
@@ -750,12 +800,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         return `
             <div style="margin: 1rem 0; text-align: center;">
-                <span class="verdict-badge-pill" style="background: ${res.tier.bg}; color: ${res.tier.color}; border: 1px solid ${res.tier.border}">
-                    ${res.tier.icon} ${res.tier.name}
+                <span class="verdict-badge-pill" style="background: ${(res.tier && res.tier.bg) || 'rgba(255,255,255,0.05)'}; color: ${(res.tier && res.tier.color) || 'var(--text-main)'}; border: 1px solid ${(res.tier && res.tier.border) || 'var(--border-color)'}">
+                    ${(res.tier && res.tier.icon) || '🔍'} ${(res.tier && res.tier.name) || 'Avaliação'}
                 </span>
-                <div style="font-size: 2.2rem; font-family: var(--font-heading); font-weight: 900; color: ${res.tier.color};">
+                <div style="font-size: 2.2rem; font-family: var(--font-heading); font-weight: 900; color: ${(res.tier && res.tier.color) || 'var(--text-main)'};">
                     ${proteinPercentage}% <span style="font-size: 1rem; color: var(--text-dim);">de Proteína</span>
                 </div>
+                ${res.rule10to1 ? `
+                    <div style="margin-top: 0.4rem;">
+                        <span class="smart-badge-tag ${res.rule10to1.passed ? 'success' : 'warning'}" style="font-size: 0.72rem;">
+                            ${res.rule10to1.passed ? '🎯 Regra 10:1 OK' : '⚠️ Fora da Regra 10:1'} (${res.rule10to1.kcalPerGram} kcal/g)
+                        </span>
+                    </div>
+                ` : ''}
             </div>
             <div class="stats-row">
                 <div class="stat-box">
@@ -853,7 +910,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="cart-item-info">
                             <div class="cart-item-name">${item.name || 'Produto'}</div>
                             <div class="cart-item-sub">
-                                <span style="color: ${item.tier.color}; font-weight: 700;">${item.tier.icon} ${item.proteinPercentage}%</span> • 
+                                <span style="color: ${(item.tier && item.tier.color) || 'var(--text-main)'}; font-weight: 700;">${(item.tier && item.tier.icon) || '🔍'} ${item.proteinPercentage || 0}%</span> • 
                                 ${protTotal} ${priceTotal ? `• <strong>${priceTotal}</strong>` : ''}
                             </div>
                         </div>
@@ -911,8 +968,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="cart-item-info">
                             <div class="cart-item-name">${item.name || 'Produto'}</div>
                             <div class="cart-item-sub">
-                                <span style="color: ${item.tier.color}; font-weight: 700;">${item.tier.icon} ${item.proteinPercentage}%</span> • 
-                                ${item.raw.calories} kcal • ${item.raw.protein}g proteína
+                                <span style="color: ${(item.tier && item.tier.color) || 'var(--text-main)'}; font-weight: 700;">${(item.tier && item.tier.icon) || '🔍'} ${item.proteinPercentage || 0}%</span> • 
+                                ${item.raw ? item.raw.calories : 0} kcal • ${item.raw ? item.raw.protein : 0}g proteína
                             </div>
                         </div>
                         <div class="cart-item-controls">
