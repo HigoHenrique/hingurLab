@@ -108,6 +108,14 @@
                     <span class="tab-label-full">Duelo (A vs B)</span>
                     <span class="tab-label-short">Duelo</span>
                 </button>
+                <button class="tab-btn" data-tab="unit-price">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="1" x2="12" y2="23"></line>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                    </svg>
+                    <span class="tab-label-full">Preço por Unidade</span>
+                    <span class="tab-label-short">Preço/Unid</span>
+                </button>
                 <button class="tab-btn" data-tab="cart">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                         <circle cx="9" cy="21" r="1"></circle>
@@ -691,7 +699,232 @@
         </section>
 
         <!-- ==========================================
-             TAB 3: CARRINHO & HISTÓRICO
+             TAB 3: COMPARADOR DE PREÇO POR UNIDADE
+             ========================================== -->
+        <section class="tab-content" id="tab-unit-price">
+            <div class="unit-price-header" style="text-align: center; margin-bottom: 1.25rem;">
+                <h2 style="font-size: 1.6rem; font-weight: 800;">🏷️ Comparador de Preço por Unidade</h2>
+                <p style="color: var(--text-muted); font-size: 0.92rem; max-width: 580px; margin: 0.25rem auto 0.85rem;">
+                    Descubra quanto você realmente está pagando por unidade, peso (100g/kg) ou volume (litro). Identifique se kits e fardos realmente valem a pena!
+                </p>
+
+                <!-- Mode Switcher Segmented Control -->
+                <div class="up-mode-switcher">
+                    <button type="button" class="up-mode-btn active" id="up-mode-compare-btn">
+                        <span>⚖️ Modo Comparação (Opções)</span>
+                    </button>
+                    <button type="button" class="up-mode-btn" id="up-mode-quick-btn">
+                        <span>⚡ Modo Rápido (1 Produto)</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ==========================================
+                 VIEW A: MODO COMPARAÇÃO MULTIPRODUTOS
+                 ========================================== -->
+            <div id="up-compare-view">
+                <!-- Guia Visual Rápido -->
+                <div class="nutrition-guide-callout" style="max-width: 860px; margin: 0 auto 1.25rem;">
+                    <div class="callout-header">
+                        <span class="callout-badge">💡 Como Funciona o Comparador</span>
+                        <span class="callout-tip">Compara unidades, gramas (g/kg), litros (ml/L) ou metros (cm/m)!</span>
+                    </div>
+                    <div class="guide-steps-grid">
+                        <div class="guide-step-card highlight">
+                            <div class="step-num">1</div>
+                            <div class="step-text">
+                                <strong>Adicione os Produtos</strong>
+                                <span>Cadastre o pacote individual, kit ou fardo com a quantidade e o preço.</span>
+                            </div>
+                        </div>
+                        <div class="guide-step-card highlight">
+                            <div class="step-num">2</div>
+                            <div class="step-text">
+                                <strong>Veja o Vencedor</strong>
+                                <span>O sistema normaliza tudo e mostra a melhor opção com o cálculo da economia.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Bar Actions -->
+                <div class="up-top-actions-bar">
+                    <button type="button" class="btn btn-primary btn-sm" id="up-add-product-btn">
+                        ➕ Adicionar Produto
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-sm" id="up-clear-compare-btn">
+                        🔄 Limpar Comparação
+                    </button>
+                </div>
+
+                <!-- Alert for Incompatible Units -->
+                <div id="up-incompatible-alert" class="up-alert-card" style="display: none;">
+                    <span class="up-alert-icon">⚠️</span>
+                    <div class="up-alert-text">
+                        Não é possível comparar diretamente grandezas incompatíveis. Ajuste as opções para a mesma unidade de medida.
+                    </div>
+                </div>
+
+                <!-- List of Compared Product Cards -->
+                <div class="up-products-grid" id="up-products-list">
+                    <!-- Populated dynamically by JS -->
+                </div>
+
+                <!-- Results & Ranking Card -->
+                <div class="glass-card up-results-container" id="up-results-card" style="display: none; margin-top: 1.5rem;">
+                    <!-- Winner Highlight Banner -->
+                    <div class="up-winner-banner" id="up-winner-banner">
+                        <!-- Populated by JS -->
+                    </div>
+
+                    <!-- Ranking List -->
+                    <div class="up-ranking-section">
+                        <h3 class="up-section-title">📊 Ranking de Custo-Benefício</h3>
+                        <div class="up-ranking-list" id="up-ranking-list">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Simulation Section -->
+                <div class="glass-card up-simulation-card" id="up-simulation-container" style="display: none; margin-top: 1.5rem;">
+                    <div class="up-sim-header">
+                        <div>
+                            <h3 class="up-sim-title">🧮 Simulação: Quanto eu pagaria comprando a mesma quantidade?</h3>
+                            <p class="up-sim-subtitle">Informe quanto você pretende consumir/comprar para comparar o custo total em cada opção.</p>
+                        </div>
+                    </div>
+
+                    <div class="up-sim-controls">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" for="up-sim-qty">
+                                <span>Quantidade Desejada</span>
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="number" id="up-sim-qty" class="form-control" placeholder="Ex: 20" min="0.01" step="any" inputmode="decimal">
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" for="up-sim-unit">
+                                <span>Unidade</span>
+                            </label>
+                            <select id="up-sim-unit" class="form-control">
+                                <!-- Populated by JS -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="up-sim-grid" id="up-sim-results">
+                        <!-- Populated by JS -->
+                    </div>
+
+                    <div class="up-sim-footer" id="up-sim-max-savings">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==========================================
+                 VIEW B: MODO RÁPIDO (1 PRODUTO)
+                 ========================================== -->
+            <div id="up-quick-view" style="display: none; max-width: 620px; margin: 0 auto;">
+                <div class="glass-card">
+                    <div class="card-header">
+                        <div>
+                            <h2 class="card-title">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <rect x="4" y="2" width="16" height="20" rx="2"></rect>
+                                    <line x1="8" y1="6" x2="16" y2="6"></line>
+                                    <line x1="16" y1="14" x2="16" y2="18"></line>
+                                </svg>
+                                Calculadora Unitária Rápida
+                            </h2>
+                            <p class="card-subtitle">Informe a quantidade e o preço para descobrir o valor proporcional imediato</p>
+                        </div>
+                    </div>
+
+                    <form onsubmit="event.preventDefault();">
+                        <div class="form-row-2">
+                            <div class="form-group">
+                                <label class="form-label" for="up-quick-qty">
+                                    <span class="label-left"><span>Quantidade</span> <span class="essential-badge">✨</span></span>
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="up-quick-qty" class="form-control" placeholder="Ex: 12" min="0" step="any" inputmode="decimal" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="up-quick-unit">
+                                    <span>Unidade de Medida</span>
+                                </label>
+                                <select id="up-quick-unit" class="form-control">
+                                    <optgroup label="Contagem">
+                                        <option value="unit">Unidade (un)</option>
+                                    </optgroup>
+                                    <optgroup label="Peso / Massa">
+                                        <option value="g">Grama (g)</option>
+                                        <option value="kg">Quilograma (kg)</option>
+                                    </optgroup>
+                                    <optgroup label="Volume / Líquidos">
+                                        <option value="ml">Mililitro (ml)</option>
+                                        <option value="l">Litro (L)</option>
+                                    </optgroup>
+                                    <optgroup label="Comprimento">
+                                        <option value="cm">Centímetro (cm)</option>
+                                        <option value="m">Metro (m)</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row-2">
+                            <div class="form-group">
+                                <label class="form-label" for="up-quick-packs">
+                                    <span>Pacotes / Embalagens</span>
+                                    <span class="optional-badge">(Opcional)</span>
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="up-quick-packs" class="form-control" placeholder="1" value="1" min="1" step="1" inputmode="numeric">
+                                    <span class="input-unit">pct</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="up-quick-price">
+                                    <span class="label-left"><span>Preço Total</span> <span class="essential-badge">✨</span></span>
+                                    <span class="helper">R$</span>
+                                </label>
+                                <div class="input-wrapper">
+                                    <input type="number" id="up-quick-price" class="form-control" placeholder="Ex: 80.00" min="0" step="any" inputmode="decimal" required>
+                                    <span class="input-unit">R$</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Result Display Box in Quick Mode -->
+                        <div class="up-quick-result-display" id="up-quick-result">
+                            <span class="up-quick-result-label">Preço Proporcional:</span>
+                            <div class="up-quick-result-val" id="up-quick-price-val">R$ 0,00</div>
+                            <div class="up-quick-result-sub" id="up-quick-sub-val">Preencha a quantidade e o preço para calcular</div>
+                        </div>
+
+                        <div class="card-actions" style="margin-top: 1.25rem;">
+                            <button type="button" class="btn btn-secondary btn-sm" id="up-quick-clear">
+                                🔄 Limpar
+                            </button>
+                            <button type="button" class="btn btn-primary btn-sm btn-full" id="up-quick-send-to-comp">
+                                ⚖️ Enviar para o Comparador
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             TAB 4: CARRINHO & HISTÓRICO
              ========================================== -->
         <section class="tab-content" id="tab-cart">
             <!-- Shopping Cart Summary -->
@@ -893,6 +1126,7 @@
     <!-- Scripts (Carregamento Universal - Compatível com file:// e Web) -->
     <script src="./js/env.js"></script>
     <script src="./js/calculator.js?v=18"></script>
+    <script src="./js/unit-price.js?v=18"></script>
     <script src="./js/presets.js?v=18"></script>
     <script src="./js/storage.js?v=18"></script>
     <script src="./js/app.js?v=18"></script>

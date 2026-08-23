@@ -191,6 +191,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderCartAndHistory();
             } else if (targetTab === 'presets') {
                 renderPresetsGrid();
+            } else if (targetTab === 'unit-price' && window.UnitPriceApp) {
+                window.UnitPriceApp.renderAll();
             }
         });
     });
