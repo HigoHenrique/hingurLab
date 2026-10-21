@@ -193,6 +193,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderPresetsGrid();
             } else if (targetTab === 'unit-price' && window.UnitPriceApp) {
                 window.UnitPriceApp.renderAll();
+            } else if (targetTab === 'protein-value' && window.ProteinValueApp) {
+                window.ProteinValueApp.render();
             }
         });
     });

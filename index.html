@@ -116,6 +116,14 @@
                     <span class="tab-label-full">Preço por Unidade</span>
                     <span class="tab-label-short">Preço/Unid</span>
                 </button>
+                <button class="tab-btn" data-tab="protein-value">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2v20"></path>
+                        <path d="M7 7h7.5a3.5 3.5 0 0 1 0 7H10a3.5 3.5 0 0 0 0 7h7"></path>
+                    </svg>
+                    <span class="tab-label-full">Custo da Proteína</span>
+                    <span class="tab-label-short">Proteína</span>
+                </button>
                 <button class="tab-btn" data-tab="cart">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                         <circle cx="9" cy="21" r="1"></circle>
@@ -924,7 +932,49 @@
         </section>
 
         <!-- ==========================================
-             TAB 4: CARRINHO & HISTÓRICO
+             TAB 4: COMPARADOR DE CUSTO DA PROTEÍNA
+             ========================================== -->
+        <section class="tab-content" id="tab-protein-value">
+            <div class="protein-value-header">
+                <h2>🥤 Comparador de Custo da Proteína</h2>
+                <p>Compare suplementos pelo que importa: quanto de proteína o pote entrega pelo seu dinheiro.</p>
+            </div>
+
+            <div class="nutrition-guide-callout protein-value-guide">
+                <div class="callout-header">
+                    <span class="callout-badge">💡 Cálculo transparente</span>
+                    <span class="callout-tip">Use os números da tabela nutricional e o peso líquido do pote.</span>
+                </div>
+                <div class="guide-steps-grid">
+                    <div class="guide-step-card highlight">
+                        <div class="step-num">1</div>
+                        <div class="step-text"><strong>Leia o rótulo</strong><span>Informe a porção e os gramas de proteína por porção.</span></div>
+                    </div>
+                    <div class="guide-step-card highlight">
+                        <div class="step-num">2</div>
+                        <div class="step-text"><strong>Compare de forma justa</strong><span>O ranking usa o menor custo por grama de proteína declarada.</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pv-actions">
+                <button type="button" class="btn btn-primary btn-sm" id="pv-add-product">➕ Adicionar produto</button>
+                <button type="button" class="btn btn-secondary btn-sm" id="pv-clear-products">🔄 Limpar comparação</button>
+            </div>
+
+            <div class="pv-products-grid" id="pv-products-list"></div>
+
+            <div class="glass-card pv-results" id="pv-results" hidden>
+                <div class="pv-winner" id="pv-winner"></div>
+                <h3 class="up-section-title">📊 Ranking por custo de proteína</h3>
+                <div class="pv-ranking" id="pv-ranking"></div>
+            </div>
+
+            <p class="pv-disclaimer">O ranking compara a proteína declarada no rótulo. O tipo do suplemento é informativo: qualidade e digestibilidade não são estimadas apenas pelo tipo, pois exigem dados específicos do produto.</p>
+        </section>
+
+        <!-- ==========================================
+             TAB 5: CARRINHO & HISTÓRICO
              ========================================== -->
         <section class="tab-content" id="tab-cart">
             <!-- Shopping Cart Summary -->
@@ -994,7 +1044,7 @@
         </section>
 
         <!-- ==========================================
-             TAB 4: ALIMENTOS DE REFERÊNCIA
+             TAB 6: ALIMENTOS DE REFERÊNCIA
              ========================================== -->
         <section class="tab-content" id="tab-presets">
             <div style="margin-bottom: 1.5rem;">
@@ -1127,6 +1177,7 @@
     <script src="./js/env.js"></script>
     <script src="./js/calculator.js?v=18"></script>
     <script src="./js/unit-price.js?v=18"></script>
+    <script src="./js/protein-comparator.js?v=1"></script>
     <script src="./js/presets.js?v=18"></script>
     <script src="./js/storage.js?v=18"></script>
     <script src="./js/app.js?v=18"></script>

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hingurlab-v19';
+const CACHE_NAME = 'hingurlab-v20';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -7,6 +7,7 @@ const ASSETS_TO_CACHE = [
   './css/components.css',
   './js/calculator.js',
   './js/unit-price.js',
+  './js/protein-comparator.js',
   './js/presets.js',
   './js/storage.js',
   './js/app.js',
