@@ -1031,7 +1031,138 @@
 }
 
 /* --------------------------------------------------------------------------
-   12. Comparador de Preço por Unidade (Unit Price Comparator)
+   12. Comparador de Custo da Proteína
+   -------------------------------------------------------------------------- */
+.protein-value-header {
+    text-align: center;
+    margin-bottom: 1.25rem;
+}
+
+.protein-value-header h2 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 0.25rem;
+}
+
+.protein-value-header p,
+.pv-disclaimer {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+}
+
+.protein-value-guide,
+.pv-actions,
+.pv-results,
+.pv-disclaimer {
+    max-width: 860px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.pv-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.pv-products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+    gap: 1.25rem;
+    max-width: 1160px;
+    margin: 0 auto;
+}
+
+.pv-product-card { padding: 1.25rem; }
+
+.pv-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.pv-card-header .up-prod-name-input { flex: 1; }
+
+.pv-remove {
+    color: var(--text-muted);
+    font-size: 1.35rem;
+    line-height: 1;
+}
+
+.pv-remove:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.pv-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.pv-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
+}
+
+.pv-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid rgba(16, 185, 129, 0.22);
+    background: rgba(16, 185, 129, 0.06);
+    border-radius: var(--radius-md);
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    text-align: center;
+}
+
+.pv-preview strong { color: var(--brand-primary); font-size: 1rem; }
+
+.pv-optional summary {
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    margin-bottom: 0.65rem;
+}
+
+.pv-results { margin-top: 1.5rem; padding: 1.5rem; }
+
+.pv-winner {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(6, 182, 212, 0.12));
+    border: 1.5px solid var(--brand-primary);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.pv-ranking { display: flex; flex-direction: column; gap: 0.65rem; }
+
+.pv-disclaimer {
+    margin-top: 1rem;
+    line-height: 1.5;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .protein-value-header h2 { font-size: 1.3rem; }
+    .protein-value-header p, .pv-disclaimer { font-size: 0.82rem; }
+    .pv-products-grid { grid-template-columns: 1fr; gap: 0.85rem; }
+    .pv-product-card { padding: 0.95rem; }
+    .pv-actions { display: grid; grid-template-columns: 1fr 1fr; }
+    .pv-actions .btn { justify-content: center; min-height: 42px; }
+    .pv-winner { padding: 1rem; gap: 0.75rem; }
+    .pv-form-row { gap: 0.5rem; }
+}
+
+/* --------------------------------------------------------------------------
+   13. Comparador de Preço por Unidade (Unit Price Comparator)
    -------------------------------------------------------------------------- */
 .unit-price-header {
     margin-bottom: 1.5rem;
